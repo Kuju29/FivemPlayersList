@@ -441,6 +441,7 @@ const actiVity = async () => {
         .setTitle(`Search player | ${SERVER_NAME}`)
         .setDescription(result.length > 0 ? result : 'No Players')
         .setTimestamp();
+        log(LOG_LEVELS.INFO, 'Completed !s message');
       msg.channel.send(embed)
     } else {
       let noPerms =  new Discord.MessageEmbed()
@@ -449,10 +450,11 @@ const actiVity = async () => {
         .setTitle(`Search player | Error`)
         .setDescription(`❌ You do not have the ${PERMISSION}, therefor you cannot run this command!`)
         .setTimestamp(new Date());
+        log(LOG_LEVELS.INFO, 'Error !s message');
         msg.channel.send(noPerms)
     }  
     });
-    }, 5000);
+    }, UPDATE_TIME);
   } 
 });
 // ----------------------------------------------------------------------------------------------
