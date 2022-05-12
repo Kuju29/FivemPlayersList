@@ -457,6 +457,19 @@ const actiVity = async () => {
     }, UPDATE_TIME);
   } 
 });
+
+   bot.on('message', async function (msg) {
+    
+    if (msg.content === '!clear') {
+        const Channel = msg.channel;
+        const Messages = await Channel.messages.fetch({limit: 20});
+
+        Messages.forEach(msg => { // Checking if the message author is a bot.
+            if (msg.author.bot) msg.delete()
+            // This will delete messages from any bot.
+        });
+  } 
+});
 // ----------------------------------------------------------------------------------------------
   
   bot.on('message',(message) => {
