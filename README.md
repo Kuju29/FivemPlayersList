@@ -4,7 +4,6 @@
 [![](https://img.shields.io/node/v/bot)](https://github.com/Kuju29/FivemPlayersList/)
 [![](https://img.shields.io/maintenance/yes/2022)](https://github.com/Kuju29/FivemPlayersList/)
 [![](https://img.shields.io/github/issues/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList/)
-[![](https://img.shields.io/github/license/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList/)
 [![](https://img.shields.io/github/languages/count/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList/)
 [![](https://img.shields.io/github/languages/top/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList/)
 
