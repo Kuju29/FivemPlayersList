@@ -284,9 +284,9 @@ const actiVity = async () => {
         {
           bot.user.setActivity(`⚠ Wait for Connect`,{'type':'WATCHING'});
         } else {
-          bot.user.setActivity(`💨 ${(await getPlayersOnline())}/${(await getVars()).sv_maxClients} 👮‍ ${police.length}`,{'type':'WATCHING'});
+          bot.user.setActivity(`💨 ${players.length}/${(await getVars()).sv_maxClients} 👮‍ ${police.length}`,{'type':'WATCHING'});
         }
-            log(LOG_LEVELS.INFO,`${(await getPlayersOnline())}/${(await getVars()).sv_maxClients} update at actiVity`);
+            log(LOG_LEVELS.INFO,`${players.length} update at actiVity`);
 
     }).catch((err) => {
       bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
