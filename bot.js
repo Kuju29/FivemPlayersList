@@ -438,8 +438,8 @@ const actiVity = async () => {
       let embed =  new Discord.MessageEmbed()
       .setAuthor(msg.member.nickname ? msg.member.nickname : msg.author.tag, msg.author.displayAvatarURL())
         .setColor("BLUE")
-        .setTitle(`Search player | City`)
-        .setDescription(result.length > 0 ? result : 'No Players Online!')
+        .setTitle(`Search player | ${SERVER_NAME}`)
+        .setDescription(result.length > 0 ? result : 'No Players')
         .setTimestamp();
       msg.channel.send(embed)
     } else {
