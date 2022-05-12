@@ -459,15 +459,14 @@ const actiVity = async () => {
 });
 
   bot.on('message', async function (msg) {
-    
     if (msg.content === '!clear') {
         const Channel = msg.channel;
         const Messages = await Channel.messages.fetch({limit: 20});
 
         Messages.forEach(msg => {
             if (msg.author.bot) msg.delete()
-         log(LOG_LEVELS.INFO, 'Completed !Clear');
         });
+        log(LOG_LEVELS.INFO, 'Completed !Clear');
   } 
 });
 // ----------------------------------------------------------------------------------------------
