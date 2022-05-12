@@ -466,7 +466,7 @@ const actiVity = async () => {
 
         Messages.forEach(msg => {
             if (msg.author.bot) msg.delete()
-         log(LOG_LEVELS.INFO, 'Completed !s Clear');
+         log(LOG_LEVELS.INFO, 'Completed !Clear');
         });
   } 
 });
