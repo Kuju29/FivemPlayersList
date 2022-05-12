@@ -18,6 +18,7 @@ A Discord bot displays a list of players and searches, as well as turning the se
 
  
 I'm just trying to do what I want. it still has errors because I have no knowledge of js.
+There are still many errors. I will try to fix it
 
 ## How to start/run the bot `Just click "start.bat"` or follow step below
 Make sure you are in the directory where the bot files are located before running the following commands!
