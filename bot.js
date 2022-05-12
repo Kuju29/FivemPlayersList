@@ -458,15 +458,15 @@ const actiVity = async () => {
   } 
 });
 
-   bot.on('message', async function (msg) {
+  bot.on('message', async function (msg) {
     
     if (msg.content === '!clear') {
         const Channel = msg.channel;
         const Messages = await Channel.messages.fetch({limit: 20});
 
-        Messages.forEach(msg => { // Checking if the message author is a bot.
+        Messages.forEach(msg => {
             if (msg.author.bot) msg.delete()
-            // This will delete messages from any bot.
+         log(LOG_LEVELS.INFO, 'Completed !s Clear');
         });
   } 
 });
