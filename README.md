@@ -23,7 +23,7 @@ I'm just trying to do what I want. it still has errors because I have no knowled
 Make sure you are in the directory where the bot files are located before running the following commands!
 Way #1 | Way #2
 ------------ | -------------
-1\. `Download file from code menu` | 1\. `git clone https://github.com/Kuju29/FivemServerStatus`
+1\. `Download file from code menu` | 1\. `git clone https://github.com/Kuju29/FivemPlayersList`
 2\. `open cmd `![image](https://user-images.githubusercontent.com/22098092/165669382-26958438-b58a-4bb7-90a9-bd7ce55f7210.png) |
 3\. `npm i` | 3\. `npm install`
 4\. `npm start` | 4\. `node ./index.js`
