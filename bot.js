@@ -114,20 +114,7 @@ exports.start = function(SETUP) {
     console.log(err);
     }
   }
-    async function getPlayersOnline() {
-    try {
 
-      const res = await fatchtest(URL_PLAYERS);
-      if (res.ok) {
-        const data = await res.json();
-        return data.length;
-      } else {
-        return null;
-      }
-      } catch(err){
-    console.log(err);
-    }
-  }
     async function getVars() {
     try {
 
@@ -143,7 +130,6 @@ exports.start = function(SETUP) {
     }
   }
   module.exports.getPlayers = getPlayers;
-  module.exports.getPlayersOnline = getPlayersOnline;
   module.exports.getVars = getVars;
 // ---------------------------------------------------------
 
