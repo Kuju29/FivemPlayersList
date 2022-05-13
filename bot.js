@@ -52,6 +52,7 @@ exports.start = function(SETUP) {
   const URL_PLAYERS = new URL('/players.json', SETUP.URL_SERVER).toString();
   const URL_INFO = new URL('/info.json', SETUP.URL_SERVER).toString();
   const MAX_PLAYERS = SETUP.MAX_PLAYERS;
+  const FETCH_LOOP = SETUP.FETCH_LOOP;
   const TICK_MAX = 1 << 9; // max bits for TICK_N
   const FETCH_TIMEOUT = SETUP.FETCH_TIMEOUT;
   const FETCH_OPS = {
@@ -81,7 +82,7 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
-  const fatchtest = async (url, opts, tries=5) => { // << "tries=num" = The number of times to test for server errors.
+  const fatchtest = async (url, opts, tries=FETCH_LOOP) => { // << "tries=num" = The number of times to test for server errors.
   const errs = [];
   
   for (let i = 0; i < tries; i++) {
