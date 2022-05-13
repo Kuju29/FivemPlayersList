@@ -210,9 +210,9 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
     LAST_COUNT = null;
   };
 
-  const updateMessage = function() {
-    getVars().then((vars) => {
-      getPlayers().then((players) => {
+  const updateMessage = async () => {
+    getVars().then(async(vars) => {
+      getPlayers().then(async(players) => {
         if (players.length !== LAST_COUNT) log(LOG_LEVELS.INFO,`${players.length} players`);
         let queue = vars['Queue'];
         let embed = UpdateEmbed()
@@ -256,6 +256,7 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
   
 const actiVity = async () => {
+  setTimeout(() =>{
       getPlayers().then(async(data) => {
         let players = data;
         let playersonline = data.length;
@@ -280,6 +281,8 @@ const actiVity = async () => {
       bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
         log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
     });
+    actiVity();
+  }, UPDATE_TIME);
 }
   
   bot.on('ready',() => {
@@ -311,7 +314,7 @@ const actiVity = async () => {
     })
     
     bot.setInterval(updateMessage, UPDATE_TIME);
-    bot.setInterval(actiVity, UPDATE_TIME);
+    actiVity();
     
   });
 
