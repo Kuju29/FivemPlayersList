@@ -103,7 +103,7 @@ exports.start = function(SETUP) {
   async function getPlayers() {
     try {
 
-      const res = await fatchtest(URL_PLAYERS);
+      const res = await fatchtest(URL_PLAYERS, {cache: "no-cache"});
       if (res.ok) {
         const data = await res.json();
         return data;
@@ -115,7 +115,7 @@ exports.start = function(SETUP) {
     async function getPlayersOnline() {
     try {
 
-      const res = await fatchtest(URL_PLAYERS);
+      const res = await fatchtest(URL_PLAYERS, {cache: "no-cache"});
       if (res.ok) {
         const data = await res.json();
         return data.length;
@@ -127,7 +127,7 @@ exports.start = function(SETUP) {
     async function getVars() {
     try {
 
-      const res = await fatchtest(URL_INFO);
+      const res = await fatchtest(URL_INFO, {cache: "no-cache"});
       if (res.ok) {
         const data = await res.json();
         return data.vars;
@@ -136,6 +136,7 @@ exports.start = function(SETUP) {
     console.log(err);
     }
   }
+  
   module.exports.getPlayers = getPlayers;
   module.exports.getPlayersOnline = getPlayersOnline;
   module.exports.getVars = getVars;
