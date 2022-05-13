@@ -275,7 +275,8 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
 const actiVity = async () => {
     setTimeout(() => {
       getPlayers().then(async(players) => {
-      
+        
+        let maxplayers = (await getVars()).sv_maxClients;
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes("police");
         });
@@ -285,7 +286,7 @@ const actiVity = async () => {
           bot.user.setActivity(`⚠ Wait for Connect`,{'type':'WATCHING'});
           log(LOG_LEVELS.INFO,`Wait for Connect update at actiVity`);
         } else if (players.length >= 1) {
-          bot.user.setActivity(`💨 ${players.length}/${(await getVars()).sv_maxClients} 👮‍ ${police.length}`,{'type':'WATCHING'});
+          bot.user.setActivity(`💨 ${players.length}/${maxplayers} 👮‍ ${police.length}`,{'type':'WATCHING'});
           log(LOG_LEVELS.INFO,`${players.length} update at actiVity`);
         } else {
           bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
