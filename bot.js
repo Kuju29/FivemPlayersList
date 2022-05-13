@@ -107,14 +107,23 @@ exports.start = function(SETUP) {
       if (res.ok) {
         const data = await res.json();
         return data;
-      } else {
-        return null;
       }
       } catch(err){
     console.log(err);
     }
   }
+    async function getPlayersOnline() {
+    try {
 
+      const res = await fatchtest(URL_PLAYERS);
+      if (res.ok) {
+        const data = await res.json();
+        return data.length;
+      }
+      } catch(err){
+    console.log(err);
+    }
+  }
     async function getVars() {
     try {
 
@@ -122,14 +131,13 @@ exports.start = function(SETUP) {
       if (res.ok) {
         const data = await res.json();
         return data.vars;
-      } else {
-        return null;
       }
       } catch(err){
     console.log(err);
     }
   }
   module.exports.getPlayers = getPlayers;
+  module.exports.getPlayersOnline = getPlayersOnline;
   module.exports.getVars = getVars;
 // ---------------------------------------------------------
 
