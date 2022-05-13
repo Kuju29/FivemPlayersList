@@ -212,28 +212,30 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
 
   const updateMessage = async () => {
     setTimeout(() =>{
-      getVars().then(async(vars) => {
-        getPlayers().then(async(players) => {
-        if (players.length !== LAST_COUNT) log(LOG_LEVELS.INFO,`${players.length}/${vars.sv_maxClients} update at message`);
+        getPlayers().then(async(data) => {
+        let players = data;
+        let playersonline = data.length;
+        let maxplayers = (await getVars()).sv_maxClients;
+        if (playersonline !== LAST_COUNT) log(LOG_LEVELS.INFO,`${playersonline}/${maxplayers} update at message`);
         let queue = vars['Queue'];
         let embed = UpdateEmbed()
         .addFields(
           { name: "Server Status",            value: "```✅ Online```",                                                                                    inline: true },
           { name: "Watching",                  value: `\`\`\`${queue === 'Enabled' || queue === undefined ? '0' : queue.split(':')[1].trim()}\`\`\``,        inline: true },
-          { name: "Online Players",           value: `\`\`\`${players.length}/${vars.sv_maxClients}\`\`\`\n\u200b\n`,                                              inline: true },
+          { name: "Online Players",           value: `\`\`\`${playersonline}/${maxplayers}\`\`\`\n\u200b\n`,                                              inline: true },
           { name: "Server Restart Times:",    value: `\`\`\`${RESTART_TIMES}\`\`\``,                                                                        inline: true }
           )
         .setThumbnail(SERVER_LOGO)
 
 // Bug 6000 msg from this. if bug delete it --------------------
-        if (players.length > 0) {
+        if (playersonline > 0) {
           
           const fieldCount = 3;
           const fields = new Array(fieldCount);
           fields.fill('');
          
           fields[0] = `**Players On:**\n`;
-          for (var i=0; i < players.length; i++) {
+          for (var i=0; i < playersonline; i++) {
             fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
           }
           for (var i=0; i < fields.length; i++) {
@@ -244,9 +246,8 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
         }
 // -------------------------------------------------------------
         sendOrUpdate(embed);
-        LAST_COUNT = players.length;
+        LAST_COUNT = playersonline;
       }).catch(offline);
-    }).catch(offline);
     TICK_N++;
     if (TICK_N >= TICK_MAX) {
       TICK_N = 0;
@@ -261,20 +262,21 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   
 const actiVity = async () => {
     setTimeout(() => {
-      getPlayers().then(async(players) => {
-        
+      getPlayers().then(async(data) => {
+        let players = data;
+        let playersonline = data.length;
         let maxplayers = (await getVars()).sv_maxClients;
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes("police");
         });
 
-        if (players.length === 0) 
+        if (playersonline === 0) 
         {
           bot.user.setActivity(`⚠ Wait for Connect`,{'type':'WATCHING'});
           log(LOG_LEVELS.INFO,`Wait for Connect update at actiVity`);
-        } else if (players.length >= 1) {
-          bot.user.setActivity(`💨 ${players.length}/${maxplayers} 👮‍ ${police.length}`,{'type':'WATCHING'});
-          log(LOG_LEVELS.INFO,`${players.length} update at actiVity`);
+        } else if (playersonline >= 1) {
+          bot.user.setActivity(`💨 ${playersonline}/${maxplayers} 👮‍ ${police.length}`,{'type':'WATCHING'});
+          log(LOG_LEVELS.INFO,`${playersonline} update at actiVity`);
         } else {
           bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
           log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
