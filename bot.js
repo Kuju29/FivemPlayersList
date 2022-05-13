@@ -9,6 +9,7 @@ const fetch = require('node-fetch');
 // const fivereborn = require('fivereborn-query');
 // const FiveM = require("fivem"); // Import the npm package.
 // const fivem = require("discord-fivem-api");
+const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/dynamic');
 // -----------------------------------------------------------
 
 const LOG_LEVELS = {
@@ -321,8 +322,8 @@ const actiVity = async () => {
       }, status: "online"
     })
     
-    bot.setInterval(updateMessage, UPDATE_TIME);
-    actiVity();
+    setIntervalAsync(updateMessage, 5000);
+    setIntervalAsync(actiVity, 5000);
     
   });
 
