@@ -321,7 +321,7 @@ const actiVity = async () => {
       }, status: "online"
     })
     
-    bot.setInterval(updateMessage, 5000);
+    bot.setInterval(updateMessage, UPDATE_TIME);
     actiVity();
     
   });
