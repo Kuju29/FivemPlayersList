@@ -418,9 +418,8 @@ const actiVity = async () => {
   bot.on('message', async function (msg) {
     
     if (/!s /.test(msg.content)) {
-      setTimeout(() =>{
         let text = msg.content.toLowerCase().substr(3,20);
-      getPlayers().then(async(players) => {
+         getPlayers().then(async(players) => {
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes(`${text}`);
         });
@@ -449,7 +448,7 @@ const actiVity = async () => {
         msg.channel.send(noPerms)
     }  
     });
-    }, UPDATE_TIME);
+    await new Promise(resolve => setTimeout(resolve, 1000));
   } 
 });
 
