@@ -9,7 +9,6 @@ const fetch = require('node-fetch');
 // const fivereborn = require('fivereborn-query');
 // const FiveM = require("fivem"); // Import the npm package.
 // const fivem = require("discord-fivem-api");
-const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async/dynamic');
 // -----------------------------------------------------------
 
 const LOG_LEVELS = {
@@ -265,6 +264,7 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
   
 const actiVity = async () => {
+  setTimeout(() => {
       getPlayers().then(async(data) => {
         let players = data;
         let playersonline = (await getPlayersOnline());
@@ -289,6 +289,8 @@ const actiVity = async () => {
       bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
         log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
     });
+    actiVity();
+  }, UPDATE_TIME);
 }
   
   bot.on('ready',() => {
@@ -319,8 +321,8 @@ const actiVity = async () => {
       }, status: "online"
     })
     
-    setIntervalAsync(updateMessage, 5000);
-    setIntervalAsync(actiVity, 5000);
+    bot.setInterval(updateMessage, 5000);
+    actiVity();
     
   });
 
