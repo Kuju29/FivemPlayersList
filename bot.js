@@ -436,7 +436,7 @@ const actiVity = async () => {
         .setDescription(result.length > 0 ? result : 'No Players')
         .setTimestamp();
         log(LOG_LEVELS.INFO, 'Completed !s message');
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       msg.channel.send(embed)
     } else {
       let noPerms =  new Discord.MessageEmbed()
