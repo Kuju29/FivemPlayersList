@@ -194,60 +194,39 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
     return embed;
   };
 
-  const offline = function() {
-    log(LOG_LEVELS.SPAM, Array.from(arguments));
-    if (LAST_COUNT !== null) log(LOG_LEVELS.INFO,`Server offline at message ${URL_SERVER} (${URL_PLAYERS} ${URL_INFO})`);
-    let embed = UpdateEmbed()
-    .setColor(0xff0000)
-    .setThumbnail(SERVER_LOGO)
-    .addFields(
-      { name: "Server Status:",          value: "```❌ Offline```",    inline: true },
-      { name: "Watching:",                value: "```--```",            inline: true },
-      { name: "Online Players:",         value: "```--```\n\u200b\n",  inline: true },
-      { name: "Server Restart Times:",   value: "```N/A```",           inline: true }
-    )
-    sendOrUpdate(embed);
-    LAST_COUNT = null;
-  };
-
-  const updateMessage = async () => {
-    setTimeout(() =>{
-        getPlayers().then(async(data) => {
-        let players = data;
-        let playersonline = data.length;
-        let maxplayers = (await getVars()).sv_maxClients;
-        if (playersonline !== LAST_COUNT) log(LOG_LEVELS.INFO,`${playersonline}/${maxplayers} update at message`);
+  const updateMessage = function() {
+    getVars().then((vars) => {
+      getPlayers().then((players) => {
+        if (players.length !== LAST_COUNT) log(LOG_LEVELS.INFO,`${players.length} players`);
         let queue = vars['Queue'];
         let embed = UpdateEmbed()
         .addFields(
           { name: "Server Status",            value: "```✅ Online```",                                                                                    inline: true },
           { name: "Watching",                  value: `\`\`\`${queue === 'Enabled' || queue === undefined ? '0' : queue.split(':')[1].trim()}\`\`\``,        inline: true },
-          { name: "Online Players",           value: `\`\`\`${playersonline}/${maxplayers}\`\`\`\n\u200b\n`,                                              inline: true },
+          { name: "Online Players",           value: `\`\`\`${players.length}/${MAX_PLAYERS}\`\`\`\n\u200b\n`,                                              inline: true },
           { name: "Server Restart Times:",    value: `\`\`\`${RESTART_TIMES}\`\`\``,                                                                        inline: true }
           )
         .setThumbnail(SERVER_LOGO)
-
-// Bug 6000 msg from this. if bug delete it --------------------
-        if (playersonline > 0) {
+        // if (players.length > 0) {
           
-          const fieldCount = 3;
-          const fields = new Array(fieldCount);
-          fields.fill('');
+        //   const fieldCount = 3;
+        //   const fields = new Array(fieldCount);
+        //   fields.fill('');
          
-          fields[0] = `**Players On:**\n`;
-          for (var i=0; i < playersonline; i++) {
-            fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
-          }
-          for (var i=0; i < fields.length; i++) {
-            let field = fields[i];
-            if (field.length > 0) embed.addField('\u200b', field);
-          }
+        //   fields[0] = `**Players On:**\n`;
+        //   for (var i=0; i < players.length; i++) {
+        //     fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
+        //   }
+        //   for (var i=0; i < fields.length; i++) {
+        //     let field = fields[i];
+        //     if (field.length > 0) embed.addField('\u200b', field);
+        //   }
 
-        }
-// -------------------------------------------------------------
+        // }
         sendOrUpdate(embed);
-        LAST_COUNT = playersonline;
+        LAST_COUNT = players.length;
       }).catch(offline);
+    }).catch(offline);
     TICK_N++;
     if (TICK_N >= TICK_MAX) {
       TICK_N = 0;
@@ -256,12 +235,9 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
       let callback = loop_callbacks.pop(0);
       callback();
     }
-    updateMessage();
-    }, UPDATE_TIME);
   };
   
 const actiVity = async () => {
-    setTimeout(() => {
       getPlayers().then(async(data) => {
         let players = data;
         let playersonline = data.length;
@@ -286,9 +262,6 @@ const actiVity = async () => {
       bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
         log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
     });
-
-        actiVity();
-    }, UPDATE_TIME); // loop speed
 }
   
   bot.on('ready',() => {
@@ -319,8 +292,8 @@ const actiVity = async () => {
       }, status: "online"
     })
     
-    updateMessage();
-    actiVity();
+    bot.setInterval(updateMessage, UPDATE_TIME);
+    bot.setInterval(actiVity, UPDATE_TIME);
     
   });
 
