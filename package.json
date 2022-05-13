@@ -10,18 +10,29 @@
   "author": "Douile / Roque / Skylar",
   "license": "GPL-3.0",
   "dependencies": {
+    "asyncio": "^0.0.2",
+    "discord-fivem-api": "^1.0.6",
     "discord.js": "^12.5.3",
+    "dotenv": "^16.0.0",
     "fetch-timeout": "0.0.2",
+    "fivem": "^2.1.8",
+    "fivem-mysql-async-js": "^0.1.2",
+    "fivereborn-query": "^1.0.4",
     "fs": "0.0.1-security",
+    "generator-aiohttp-uvloop": "^0.1.1",
+    "getenv": "^1.0.0",
+    "js-fivem-api": "^1.0.6",
     "libsodium-wrappers": "^0.7.4",
     "node-fetch": "^1.6.3",
     "opusscript": "0.0.6",
     "readline": "^1.3.0",
+    "set-interval-async": "^2.0.3",
     "uws": "^100.0.1",
+    "yo": "^4.3.0",
     "ytdl-core": "^0.29.1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kuju29/FivemPlayersList"
+    "url": "https://github.com/TheONLYGod1/FivemServerStatus"
   }
 }
