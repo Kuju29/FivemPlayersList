@@ -81,7 +81,7 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
-  const fatchtest = async (url, opts, tries=4) => { // << "tries=num" = The number of times to test for server errors.
+  const fatchtest = async (url, opts, tries=5) => { // << "tries=num" = The number of times to test for server errors.
   const errs = [];
   
   for (let i = 0; i < tries; i++) {
@@ -283,10 +283,14 @@ const actiVity = async () => {
         if (players.length === 0) 
         {
           bot.user.setActivity(`⚠ Wait for Connect`,{'type':'WATCHING'});
-        } else {
+          log(LOG_LEVELS.INFO,`Wait for Connect update at actiVity`);
+        } else if (players.length >= 1) {
           bot.user.setActivity(`💨 ${players.length}/${(await getVars()).sv_maxClients} 👮‍ ${police.length}`,{'type':'WATCHING'});
+          log(LOG_LEVELS.INFO,`${players.length} update at actiVity`);
+        } else {
+          bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+          log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
         }
-            log(LOG_LEVELS.INFO,`${players.length} update at actiVity`);
 
     }).catch((err) => {
       bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
