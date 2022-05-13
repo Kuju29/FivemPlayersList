@@ -194,6 +194,22 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
     return embed;
   };
 
+  const offline = function() {
+    log(LOG_LEVELS.SPAM, Array.from(arguments));
+    if (LAST_COUNT !== null) log(LOG_LEVELS.INFO,`Server offline at message ${URL_SERVER} (${URL_PLAYERS} ${URL_INFO})`);
+    let embed = UpdateEmbed()
+    .setColor(0xff0000)
+    .setThumbnail(SERVER_LOGO)
+    .addFields(
+      { name: "Server Status:",          value: "```❌ Offline```",    inline: true },
+      { name: "Watching:",                value: "```--```",            inline: true },
+      { name: "Online Players:",         value: "```--```\n\u200b\n",  inline: true },
+      { name: "Server Restart Times:",   value: "```N/A```",           inline: true }
+    )
+    sendOrUpdate(embed);
+    LAST_COUNT = null;
+  };
+
   const updateMessage = function() {
     getVars().then((vars) => {
       getPlayers().then((players) => {
@@ -207,22 +223,24 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
           { name: "Server Restart Times:",    value: `\`\`\`${RESTART_TIMES}\`\`\``,                                                                        inline: true }
           )
         .setThumbnail(SERVER_LOGO)
-        // if (players.length > 0) {
+// ------------------------------ Bug ---------------------------------------
+        if (players.length > 0) {
           
-        //   const fieldCount = 3;
-        //   const fields = new Array(fieldCount);
-        //   fields.fill('');
+          const fieldCount = 3;
+          const fields = new Array(fieldCount);
+          fields.fill('');
          
-        //   fields[0] = `**Players On:**\n`;
-        //   for (var i=0; i < players.length; i++) {
-        //     fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
-        //   }
-        //   for (var i=0; i < fields.length; i++) {
-        //     let field = fields[i];
-        //     if (field.length > 0) embed.addField('\u200b', field);
-        //   }
+          fields[0] = `**Players On:**\n`;
+          for (var i=0; i < players.length; i++) {
+            fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
+          }
+          for (var i=0; i < fields.length; i++) {
+            let field = fields[i];
+            if (field.length > 0) embed.addField('\u200b', field);
+          }
 
-        // }
+        }
+// ------------------------------ Bug ---------------------------------------
         sendOrUpdate(embed);
         LAST_COUNT = players.length;
       }).catch(offline);
