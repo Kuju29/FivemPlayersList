@@ -259,7 +259,7 @@ const actiVity = async () => {
   setTimeout(() =>{
       getPlayers().then(async(data) => {
         let players = data;
-        let playersonline = data.length;
+        let playersonline = (await getPlayersOnline());
         let maxplayers = (await getVars()).sv_maxClients;
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes("police");
