@@ -56,8 +56,8 @@ const TEMPLATE = {
     'message': 'Channel that will log status changes',
     'required': true,
   },
-  'FETCH_TIMEOUT': {
-    'message': 'TIMEOUT',
+  'FETCHTEST_LOOP': {
+    'message': 'FETCHTEST_LOOP',
     'required': true,
   },
   'UPDATE_TIME': {
