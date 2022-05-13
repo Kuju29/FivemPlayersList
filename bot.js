@@ -264,7 +264,6 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
   
 const actiVity = async () => {
-  setTimeout(() => {
       getPlayers().then(async(data) => {
         let players = data;
         let playersonline = (await getPlayersOnline());
@@ -289,8 +288,8 @@ const actiVity = async () => {
       bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
         log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
     });
+    await new Promise(resolve => setTimeout(resolve, UPDATE_TIME));
     actiVity();
-  }, UPDATE_TIME);
 }
   
   bot.on('ready',() => {
