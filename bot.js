@@ -101,47 +101,44 @@ exports.start = function(SETUP) {
 };
 
   async function getPlayers() {
-    try {
+    
+  const res = await fatchtest(URL_PLAYERS);
 
-      const res = await fatchtest(URL_PLAYERS, {cache: "no-cache"});
-      if (res.ok) {
-        const data = await res.json();
+  if (res.ok) {
+    const data = await res.json();
+      if (data.length === 0) {
         return data;
       } else {
-        return null;
+        return data;
       }
-      } catch(err){
-    console.log(err);
     }
   }
-  
-    async function getPlayersOnline() {
-    try {
 
-      const res = await fatchtest(URL_PLAYERS, {cache: "no-cache"});
-      if (res.ok) {
-        const data = await res.json();
+  async function getPlayersOnline() {
+
+  const res = await fatchtest(URL_PLAYERS);
+
+  if (res.ok) {
+    const data = await res.json();
+      if (data.length === 0) {
         return data.length;
       } else {
-        return null;
+        return data.length;
       }
-      } catch(err){
-    console.log(err);
     }
   }
-  
-    async function getVars() {
-    try {
 
-      const res = await fatchtest(URL_INFO, {cache: "no-cache"});
-      if (res.ok) {
-        const data = await res.json();
+  async function getVars() {
+
+  const res = await fatchtest(URL_INFO);
+
+  if (res.ok) {
+    const data = await res.json();
+      if (data.length === 0) {
         return data.vars;
       } else {
-        return null;
+        return data.vars;
       }
-      } catch(err){
-    console.log(err);
     }
   }
   
