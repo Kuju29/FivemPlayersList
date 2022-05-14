@@ -83,7 +83,7 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
-  const fatchtest = async (url, opts, tries=FETCHTEST_LOOP) => { // << "tries=num" = The number of times to test for server errors.
+  const fetchtest = async (url, opts, tries=FETCHTEST_LOOP) => { // << "tries=num" = The number of times to test for server errors.
   const errs = [];
   
   for (let i = 0; i < tries; i++) {
@@ -101,7 +101,7 @@ exports.start = function(SETUP) {
 
   async function getPlayers() {
     
-  const res = await fatchtest(URL_PLAYERS);
+  const res = await fetchtest(URL_PLAYERS);
 
   if (res.ok) {
     const data = await res.json();
@@ -111,7 +111,7 @@ exports.start = function(SETUP) {
 
   async function getDynamic() {
 
-  const res = await fatchtest(URL_DYNAMIC);
+  const res = await fetchtest(URL_DYNAMIC);
 
   if (res.ok) {
     const data = await res.json();
