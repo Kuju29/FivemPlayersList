@@ -111,7 +111,7 @@ exports.start = function(SETUP) {
 
   async function getDynamic() {
 
-  const res = await fetchtest(URL_DYNAMIC);
+  const res = await fetchtest(URL_DYNAMIC, FETCH_OPS);
 
   if (res.ok) {
     const data = await res.json();
@@ -249,10 +249,9 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
   
 const actiVity = async () => {
-      getDynamic().then(async(dynamic) => {
-        let players = (await getPlayers());
-        let playersonline = dynamic.clients;
-        let maxplayers = dynamic.sv_maxclients;
+      getPlayers().then(async(players) => {
+        let playersonline = (await getDynamic()).clients;
+        let maxplayers = (await getDynamic()).sv_maxclients;
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes("police");
         });
