@@ -51,6 +51,7 @@ exports.start = function(SETUP) {
   const PERMISSION = SETUP.PERMISSION;
   const URL_PLAYERS = new URL('/players.json', SETUP.URL_SERVER).toString();
   const URL_INFO = new URL('/info.json', SETUP.URL_SERVER).toString();
+  const URL_DYNAMIC = new URL('/dynamic.json', SETUP.URL_SERVER).toString();
   const MAX_PLAYERS = SETUP.MAX_PLAYERS;
   const FETCHTEST_LOOP = SETUP.FETCHTEST_LOOP;
   const TICK_MAX = 1 << 9; // max bits for TICK_N
@@ -86,9 +87,7 @@ exports.start = function(SETUP) {
   const errs = [];
   
   for (let i = 0; i < tries; i++) {
- 
     // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
-    
     try {
       return await fetch(url, opts);
     }
@@ -106,45 +105,22 @@ exports.start = function(SETUP) {
 
   if (res.ok) {
     const data = await res.json();
-      if (data.length === 0) {
-        return data;
-      } else {
         return data;
       }
-    }
   }
 
-  async function getPlayersOnline() {
+  async function getDynamic() {
 
-  const res = await fatchtest(URL_PLAYERS);
+  const res = await fatchtest(URL_DYNAMIC);
 
   if (res.ok) {
     const data = await res.json();
-      if (data.length === 0) {
-        return data.length;
-      } else {
-        return data.length;
+        return data;
       }
-    }
-  }
-
-  async function getVars() {
-
-  const res = await fatchtest(URL_INFO);
-
-  if (res.ok) {
-    const data = await res.json();
-      if (data.length === 0) {
-        return data.vars;
-      } else {
-        return data.vars;
-      }
-    }
   }
   
   module.exports.getPlayers = getPlayers;
-  module.exports.getPlayersOnline = getPlayersOnline;
-  module.exports.getVars = getVars;
+  module.exports.getDynamic = getDynamic;
 // ---------------------------------------------------------
 
   const log = function(level,message) {
@@ -225,35 +201,38 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
 
   const updateMessage = async () => {
-    getVars().then(async(vars) => {
+    getDynamic().then(async(dynamic) => {
       getPlayers().then(async(players) => {
         if (players.length !== LAST_COUNT) log(LOG_LEVELS.INFO,`${players.length} players`);
-        let queue = vars['Queue'];
+        let queue = dynamic['Queue'];
         let embed = UpdateEmbed()
         .addFields(
           { name: "Server Status",            value: "```✅ Online```",                                                                                    inline: true },
           { name: "Watching",                  value: `\`\`\`${queue === 'Enabled' || queue === undefined ? '0' : queue.split(':')[1].trim()}\`\`\``,        inline: true },
-          { name: "Online Players",           value: `\`\`\`${players.length}/${vars.sv_maxClients}\`\`\`\n\u200b\n`,                                              inline: true },
+          { name: "Online Players",           value: `\`\`\`${players.length}/${dynamic.sv_maxclients}\`\`\`\n\u200b\n`,                                              inline: true },
           { name: "Server Restart Times:",    value: `\`\`\`${RESTART_TIMES}\`\`\``,                                                                        inline: true }
           )
         .setThumbnail(SERVER_LOGO)
 // ------------------------------ Bug ---------------------------------------
-        if (players.length > 0) {
-          
-          const fieldCount = 3;
-          const fields = new Array(fieldCount);
-          fields.fill('');
+        // if (players.length > 0) {
+        //   const fieldCount = 1;
+        //   const fields = new Array(fieldCount);
+        //   fields.fill('');
          
-          fields[0] = `**Players On:**\n`;
-          for (var i=0; i < players.length; i++) {
-            fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
-          }
-          for (var i=0; i < fields.length; i++) {
-            let field = fields[i];
-            if (field.length > 0) embed.addField('\u200b', field);
-          }
+        //   fields[0] = `**Players On:**\n`;
+        //   // for (var i=0; i < players.length; i++) {
+        //   //   fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
+        //   // }
+        //   for (var i = 0; i < players.length; i++) {
+        //     const discord = players[i].identifiers.find((el) => el.startsWith('discord'),).replace('discord:', '');
+        //     fields[(i + 1) % fieldCount] += `${players[i].name} [${players[i].id}], ${discord}\n`;
+        //   }
+        //   for (var i=0; i < fields.length; i++) {
+        //     let field = fields[i];
+        //     if (field.length > 0) embed.addField('\u200b', field);
+        //   }
+        // }
 
-        }
 // ------------------------------ Bug ---------------------------------------
         sendOrUpdate(embed);
         LAST_COUNT = players.length;
@@ -270,10 +249,10 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
   
 const actiVity = async () => {
-      getPlayers().then(async(data) => {
-        let players = data;
-        let playersonline = (await getPlayersOnline());
-        let maxplayers = (await getVars()).sv_maxClients;
+      getDynamic().then(async(dynamic) => {
+        let players = (await getPlayers());
+        let playersonline = dynamic.clients;
+        let maxplayers = dynamic.sv_maxclients;
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes("police");
         });
@@ -289,10 +268,10 @@ const actiVity = async () => {
           bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
           log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
         }
-
-    }).catch((err) => {
-      bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-        log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
+  
+    }).catch ((err) =>{
+          bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+          log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
     });
     await new Promise(resolve => setTimeout(resolve, UPDATE_TIME));
     actiVity();
