@@ -107,11 +107,14 @@ exports.start = function(SETUP) {
       if (res.ok) {
         const data = await res.json();
         return data;
+      } else {
+        return null;
       }
       } catch(err){
     console.log(err);
     }
   }
+  
     async function getPlayersOnline() {
     try {
 
@@ -119,11 +122,14 @@ exports.start = function(SETUP) {
       if (res.ok) {
         const data = await res.json();
         return data.length;
+      } else {
+        return null;
       }
       } catch(err){
     console.log(err);
     }
   }
+  
     async function getVars() {
     try {
 
@@ -131,6 +137,8 @@ exports.start = function(SETUP) {
       if (res.ok) {
         const data = await res.json();
         return data.vars;
+      } else {
+        return null;
       }
       } catch(err){
     console.log(err);
