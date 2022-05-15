@@ -124,21 +124,15 @@ exports.start = function(SETUP) {
 
   async function getPlayers() {
     return new Promise((sendSuccess, sendError) => {
-      fetchtest(URL_PLAYERS, {cache: "no-store"})
-        .then(response => {
-          if (!response.ok) {
-             return Promise.reject(response)
-          }
-          return response.json()
-      })
-      .catch(async response => {
-          const error = await response.text().then(text => text)
-          return Promise.reject(error)
-      })
-      .then(data => {
+      fetchtest(URL_PLAYERS, {cache: "no-store"}).then(async (res) => {
+        if (!res .ok) {
+            throw await res.json();
+        }
+        return res.json()
+
+      }).then(data => {
           sendSuccess(data);
-      })
-      .catch(err => {
+      }).catch(err => {
           sendError(err);
       })
     })
@@ -146,22 +140,15 @@ exports.start = function(SETUP) {
 
   async function getDynamic() {
     return new Promise((sendSuccess, sendError) => {
-      fetchtest(URL_DYNAMIC, {cache: "no-store"})
-        .then(response => {
-          if (!response.ok) {
-              return Promise.reject(response)
-          }
-         return response.json()
-      })
-      .catch(async response => {
-          const error = await response.text().then(text => text)
-          return Promise.reject(error)
-      })
-      .then(data => {
+      fetchtest(URL_DYNAMIC, {cache: "no-store"}).then(async (res) => {
+        if (!res .ok) {
+            throw await res.json();
+        }
+        return res.json()
 
+      }).then(data => {
           sendSuccess(data);
-      })
-      .catch(err => {
+      }).catch(err => {
           sendError(err);
       })
     })
