@@ -84,18 +84,21 @@ exports.start = function(SETUP) {
 
 // fetch API ---------------------------------------------------
   const fetchtest = async (url, opts, tries=FETCHTEST_LOOP) => { // << "tries=num" = The number of times to test for server errors.
+  const sleep = m => new Promise(r => setTimeout(r, m));
   const errs = [];
-  
+
   for (let i = 0; i < tries; i++) {
     // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
+
     try {
-      return await fetch(url, opts);
+      return await fetch(url, opts).then(sleep(3000)) ;
     }
     catch (err) {
       errs.push(err);
     }
-  }
-  
+
+}
+
   throw errs;
 };
 
@@ -214,24 +217,24 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
           )
         .setThumbnail(SERVER_LOGO)
 // ------------------------------ Bug ---------------------------------------
-        // if (players.length > 0) {
-        //   const fieldCount = 1;
-        //   const fields = new Array(fieldCount);
-        //   fields.fill('');
+        if (players.length > 0) {
+          const fieldCount = 1;
+          const fields = new Array(fieldCount);
+          fields.fill('');
          
-        //   fields[0] = `**Players On:**\n`;
-        //   // for (var i=0; i < players.length; i++) {
-        //   //   fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
-        //   // }
+          fields[0] = `**Players On:**\n`;
+          for (var i=0; i < players.length; i++) {
+            fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
+          }
         //   for (var i = 0; i < players.length; i++) {
         //     const discord = players[i].identifiers.find((el) => el.startsWith('discord'),).replace('discord:', '');
         //     fields[(i + 1) % fieldCount] += `${players[i].name} [${players[i].id}], ${discord}\n`;
         //   }
-        //   for (var i=0; i < fields.length; i++) {
-        //     let field = fields[i];
-        //     if (field.length > 0) embed.addField('\u200b', field);
-        //   }
-        // }
+          for (var i=0; i < fields.length; i++) {
+            let field = fields[i];
+            if (field.length > 0) embed.addField('\u200b', field);
+          }
+        }
 
 // ------------------------------ Bug ---------------------------------------
         sendOrUpdate(embed);
@@ -249,9 +252,10 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
   
 const actiVity = async () => {
-      getPlayers().then(async(players) => {
-        let playersonline = (await getDynamic()).clients;
-        let maxplayers = (await getDynamic()).sv_maxclients;
+      getDynamic().then(async(dynamic) => {
+        let players = (await getPlayers());
+        let playersonline = dynamic.clients;
+        let maxplayers = dynamic.sv_maxclients;
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes("police");
         });
