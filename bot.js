@@ -88,7 +88,7 @@ exports.start = function(SETUP) {
   const errs = [];
 
   for (let i = 0; i < tries; i += 2) {
-    console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
+   // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
 
     try {
       return await fetch(url, opts);
