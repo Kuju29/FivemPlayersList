@@ -87,7 +87,7 @@ exports.start = function(SETUP) {
   const sleep = m => new Promise(r => setTimeout(r, m));
   const errs = [];
 
-  for (let i = 0; i < tries; i += 2) {
+  for (let i = 0; i < tries; i += 1) {
    // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
 
     try {
@@ -102,24 +102,68 @@ exports.start = function(SETUP) {
   throw errs;
 };
 
-  async function getPlayers() {
+//   async function getPlayers() {
     
-  const res = await fetchtest(URL_PLAYERS);
+//   const res = await fetchtest(URL_PLAYERS);
+//   const data = await res.json();
 
-  if (res.ok) {
-    const data = await res.json();
-        return data;
-      }
+//   if (res.ok) {
+//         return data;
+//       }
+//   }
+
+//   async function getDynamic() {
+
+//   const res = await fetchtest(URL_DYNAMIC);
+//   const data = await res.json();
+
+//   if (res.ok) {
+//         return data;
+//       }
+//   }
+
+  async function getPlayers() {
+    return new Promise((sendSuccess, sendError) => {
+      fetchtest(URL_PLAYERS)
+        .then(response => {
+          if (!response.ok) {
+             return Promise.reject(response)
+          }
+          return response.json()
+      })
+      .catch(async response => {
+          const error = await response.text().then(text => text)
+          return Promise.reject(error)
+      })
+      .then(data => {
+          sendSuccess(data);
+      })
+      .catch(err => {
+          sendError(err);
+      })
+    })
   }
 
   async function getDynamic() {
-
-  const res = await fetchtest(URL_DYNAMIC, FETCH_OPS,);
-
-  if (res.ok) {
-    const data = await res.json();
-        return data;
-      }
+    return new Promise((sendSuccess, sendError) => {
+      fetchtest(URL_DYNAMIC)
+        .then(response => {
+          if (!response.ok) {
+              return Promise.reject(response)
+          }
+         return response.json()
+      })
+      .catch(async response => {
+          const error = await response.text().then(text => text)
+          return Promise.reject(error)
+      })
+      .then(data => {
+          sendSuccess(data);
+      })
+      .catch(err => {
+          sendError(err);
+      })
+    })
   }
   
   module.exports.getPlayers = getPlayers;
