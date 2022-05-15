@@ -124,7 +124,7 @@ exports.start = function(SETUP) {
 
   async function getPlayers() {
     return new Promise((sendSuccess, sendError) => {
-      fetchtest(URL_PLAYERS)
+      fetchtest(URL_PLAYERS, {cache: "no-store"})
         .then(response => {
           if (!response.ok) {
              return Promise.reject(response)
@@ -146,7 +146,7 @@ exports.start = function(SETUP) {
 
   async function getDynamic() {
     return new Promise((sendSuccess, sendError) => {
-      fetchtest(URL_DYNAMIC)
+      fetchtest(URL_DYNAMIC, {cache: "no-store"})
         .then(response => {
           if (!response.ok) {
               return Promise.reject(response)
@@ -158,6 +158,7 @@ exports.start = function(SETUP) {
           return Promise.reject(error)
       })
       .then(data => {
+
           sendSuccess(data);
       })
       .catch(err => {
