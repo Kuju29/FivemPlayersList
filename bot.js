@@ -87,11 +87,11 @@ exports.start = function(SETUP) {
   const sleep = m => new Promise(r => setTimeout(r, m));
   const errs = [];
 
-  for (let i = 0; i < tries; i++) {
-    // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
+  for (let i = 0; i < tries; i += 2) {
+    console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
 
     try {
-      return await fetch(url, opts).then(sleep(3000)) ;
+      return await fetch(url, opts);
     }
     catch (err) {
       errs.push(err);
@@ -114,7 +114,7 @@ exports.start = function(SETUP) {
 
   async function getDynamic() {
 
-  const res = await fetchtest(URL_DYNAMIC, FETCH_OPS);
+  const res = await fetchtest(URL_DYNAMIC, FETCH_OPS,);
 
   if (res.ok) {
     const data = await res.json();
@@ -424,7 +424,6 @@ const actiVity = async () => {
         .setDescription(result.length > 0 ? result : 'No Players')
         .setTimestamp();
         log(LOG_LEVELS.INFO, 'Completed !s message');
-      await new Promise(resolve => setTimeout(resolve, 1000));
       msg.channel.send(embed)
     } else {
       let noPerms =  new Discord.MessageEmbed()
