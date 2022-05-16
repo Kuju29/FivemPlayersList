@@ -9,6 +9,7 @@ const fetch = require('node-fetch');
 // const fivereborn = require('fivereborn-query');
 // const FiveM = require("fivem"); // Import the npm package.
 // const fivem = require("discord-fivem-api");
+const axios = require('axios');
 // -----------------------------------------------------------
 
 const LOG_LEVELS = {
@@ -86,11 +87,11 @@ exports.start = function(SETUP) {
   const fetchtest = async (url, opts, tries=FETCHTEST_LOOP) => { // << "tries=num" = The number of times to test for server errors.
   const errs = [];
 
-  for (let i = 0; i < tries; i += 2) {
+  for (let i = 0; i < tries; i += 1) {
    // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
 
     try {
-      return await fetch(url, opts);
+      return await axios.get(url, opts);
     }
     catch (err) {
       errs.push(err);
@@ -121,38 +122,62 @@ exports.start = function(SETUP) {
   //     }
   // }
 
-  async function getPlayers() {
-    return new Promise((sendSuccess, sendError) => {
-      fetchtest(URL_PLAYERS, {cache: "no-store"}).then(async (res) => {
-        if (!res .ok) {
-            throw await res.json();
-        }
-        return res.json()
+  // async function getPlayers() {
+  //   return new Promise((sendSuccess, sendError) => {
+  //     fetchtest(URL_PLAYERS, {cache: "no-store"}).then(async (res) => {
+  //       if (!res .ok) {
+  //           throw await res.json();
+  //       }
+  //       return res.json()
 
-      }).then(data => {
-          sendSuccess(data);
-      }).catch(err => {
-          sendError(err);
-      })
-    })
-  }
+  //     }).then(data => {
+  //         sendSuccess(data);
+  //     }).catch(err => {
+  //         sendError(err);
+  //     })
+  //   })
+  // }
 
-  async function getDynamic() {
-    return new Promise((sendSuccess, sendError) => {
-      fetchtest(URL_DYNAMIC, {cache: "no-store"}).then(async (res) => {
-        if (!res .ok) {
-            throw await res.json();
-        }
-        return res.json()
+  // async function getDynamic() {
+  //   return new Promise((sendSuccess, sendError) => {
+  //     fetchtest(URL_DYNAMIC, {cache: "no-store"}).then(async (res) => {
+  //       if (!res .ok) {
+  //           throw await res.json();
+  //       }
+  //       return res.json()
 
-      }).then(data => {
-          sendSuccess(data);
-      }).catch(err => {
-          sendError(err);
-      })
-    })
-  }
-  
+  //     }).then(data => {
+  //         sendSuccess(data);
+  //     }).catch(err => {
+  //         sendError(err);
+  //     })
+  //   })
+  // }
+
+    const getPlayers = async () => {
+       try {
+         const res = await fetchtest(URL_PLAYERS);
+        
+            let data = res;
+            return data.data;
+
+          } catch (err) {
+              console.error(err);
+          }
+      };
+
+    const getDynamic = async () => {
+       try {
+         const res = await fetchtest(URL_DYNAMIC);
+        
+            let data = res;
+            return data.data;
+
+          } catch (err) {
+              console.error(err);
+          }
+      };
+
   module.exports.getPlayers = getPlayers;
   module.exports.getDynamic = getDynamic;
 // ---------------------------------------------------------
@@ -227,8 +252,7 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
     .addFields(
       { name: "Server Status:",          value: "```❌ Offline```",    inline: true },
       { name: "Watching:",                value: "```--```",            inline: true },
-      { name: "Online Players:",         value: "```--```\n\u200b\n",  inline: true },
-      { name: "Server Restart Times:",   value: "```N/A```",           inline: true }
+      { name: "Online Players:",         value: "```--```\n\u200b\n",  inline: true }
     )
     sendOrUpdate(embed);
     LAST_COUNT = null;
@@ -243,31 +267,10 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
         .addFields(
           { name: "Server Status",            value: "```✅ Online```",                                                                                    inline: true },
           { name: "Watching",                  value: `\`\`\`${queue === 'Enabled' || queue === undefined ? '0' : queue.split(':')[1].trim()}\`\`\``,        inline: true },
-          { name: "Online Players",           value: `\`\`\`${players.length}/${dynamic.sv_maxclients}\`\`\`\n\u200b\n`,                                              inline: true },
-          { name: "Server Restart Times:",    value: `\`\`\`${RESTART_TIMES}\`\`\``,                                                                        inline: true }
+          { name: "Online Players",           value: `\`\`\`${players.length}/${dynamic.sv_maxclients}\`\`\`\n\u200b\n`,                                              inline: true }
           )
         .setThumbnail(SERVER_LOGO)
-// ------------------------------ Bug ---------------------------------------
-        if (players.length > 0) {
-          const fieldCount = 1;
-          const fields = new Array(fieldCount);
-          fields.fill('');
-         
-          fields[0] = `**Players On:**\n`;
-          for (var i=0; i < players.length; i++) {
-            fields[(i+1)%fieldCount] += `${players[i].name.substr(0,12)} Ping: ${players[i].ping}ms\n`; // first 12 characters of players name
-          }
-        //   for (var i = 0; i < players.length; i++) {
-        //     const discord = players[i].identifiers.find((el) => el.startsWith('discord'),).replace('discord:', '');
-        //     fields[(i + 1) % fieldCount] += `${players[i].name} [${players[i].id}], ${discord}\n`;
-        //   }
-          for (var i=0; i < fields.length; i++) {
-            let field = fields[i];
-            if (field.length > 0) embed.addField('\u200b', field);
-          }
-        }
 
-// ------------------------------ Bug ---------------------------------------
         sendOrUpdate(embed);
         LAST_COUNT = players.length;
       }).catch(offline);
@@ -290,7 +293,7 @@ const actiVity = async () => {
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes("police");
         });
-
+                
         if (playersonline === 0) 
         {
           bot.user.setActivity(`⚠ Wait for Connect`,{'type':'WATCHING'});
