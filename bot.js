@@ -87,7 +87,7 @@ exports.start = function(SETUP) {
   const errs = [];
 
   for (let i = 0; i < tries; i += 2) {
-   console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
+   // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
 
     try {
       return await fetch(url, opts);
@@ -101,57 +101,57 @@ exports.start = function(SETUP) {
   throw errs;
 };
 
-  async function getPlayers() {
-    
-  const res = await fetchtest(URL_PLAYERS);
-  const data = await res.json();
-
-  if (res.ok) {
-        return data;
-      }
-  }
-
-  async function getDynamic() {
-
-  const res = await fetchtest(URL_DYNAMIC);
-  const data = await res.json();
-
-  if (res.ok) {
-        return data;
-      }
-  }
-
   // async function getPlayers() {
-  //   return new Promise((sendSuccess, sendError) => {
-  //     fetchtest(URL_PLAYERS, {cache: "no-store"}).then(async (res) => {
-  //       if (!res .ok) {
-  //           throw await res.json();
-  //       }
-  //       return res.json()
+    
+  // const res = await fetchtest(URL_PLAYERS);
+  // const data = await res.json();
 
-  //     }).then(data => {
-  //         sendSuccess(data);
-  //     }).catch(err => {
-  //         sendError(err);
-  //     })
-  //   })
+  // if (res.ok) {
+  //       return data;
+  //     }
   // }
 
   // async function getDynamic() {
-  //   return new Promise((sendSuccess, sendError) => {
-  //     fetchtest(URL_DYNAMIC, {cache: "no-store"}).then(async (res) => {
-  //       if (!res .ok) {
-  //           throw await res.json();
-  //       }
-  //       return res.json()
 
-  //     }).then(data => {
-  //         sendSuccess(data);
-  //     }).catch(err => {
-  //         sendError(err);
-  //     })
-  //   })
+  // const res = await fetchtest(URL_DYNAMIC);
+  // const data = await res.json();
+
+  // if (res.ok) {
+  //       return data;
+  //     }
   // }
+
+  async function getPlayers() {
+    return new Promise((sendSuccess, sendError) => {
+      fetchtest(URL_PLAYERS, {cache: "no-store"}).then(async (res) => {
+        if (!res .ok) {
+            throw await res.json();
+        }
+        return res.json()
+
+      }).then(data => {
+          sendSuccess(data);
+      }).catch(err => {
+          sendError(err);
+      })
+    })
+  }
+
+  async function getDynamic() {
+    return new Promise((sendSuccess, sendError) => {
+      fetchtest(URL_DYNAMIC, {cache: "no-store"}).then(async (res) => {
+        if (!res .ok) {
+            throw await res.json();
+        }
+        return res.json()
+
+      }).then(data => {
+          sendSuccess(data);
+      }).catch(err => {
+          sendError(err);
+      })
+    })
+  }
   
   module.exports.getPlayers = getPlayers;
   module.exports.getDynamic = getDynamic;
