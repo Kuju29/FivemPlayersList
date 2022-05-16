@@ -162,7 +162,7 @@ exports.start = function(SETUP) {
             return data.data;
 
           } catch (err) {
-              console.error(err);
+              return null;
           }
       };
 
@@ -174,7 +174,7 @@ exports.start = function(SETUP) {
             return data.data;
 
           } catch (err) {
-              console.error(err);
+              return null;
           }
       };
 
@@ -260,21 +260,22 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
 
   const updateMessage = async () => {
     getDynamic().then(async(dynamic) => {
-      getPlayers().then(async(players) => {
-        if (players.length !== LAST_COUNT) log(LOG_LEVELS.INFO,`${players.length} players`);
+
+        let playersonline = dynamic.clients;
+        let maxplayers = dynamic.sv_maxclients;
+        if (playersonline !== LAST_COUNT) log(LOG_LEVELS.INFO,`${playersonline} players`);
         let queue = dynamic['Queue'];
         let embed = UpdateEmbed()
         .addFields(
           { name: "Server Status",            value: "```✅ Online```",                                                                                    inline: true },
           { name: "Watching",                  value: `\`\`\`${queue === 'Enabled' || queue === undefined ? '0' : queue.split(':')[1].trim()}\`\`\``,        inline: true },
-          { name: "Online Players",           value: `\`\`\`${players.length}/${dynamic.sv_maxclients}\`\`\`\n\u200b\n`,                                              inline: true }
+          { name: "Online Players",           value: `\`\`\`${playersonline}/${maxplayers}\`\`\`\n\u200b\n`,                                              inline: true }
           )
         .setThumbnail(SERVER_LOGO)
 
         sendOrUpdate(embed);
-        LAST_COUNT = players.length;
+        LAST_COUNT = playersonline;
       }).catch(offline);
-    }).catch(offline);
     TICK_N++;
     if (TICK_N >= TICK_MAX) {
       TICK_N = 0;
