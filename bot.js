@@ -87,7 +87,7 @@ exports.start = function(SETUP) {
   const fetchtest = async (url, opts, tries=FETCHTEST_LOOP) => { // << "tries=num" = The number of times to test for server errors.
   const errs = [];
 
-  for (let i = 0; i < tries; i += 1) {
+  for (let i = 0; i < tries; i+=1) {
    // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
 
     try {
@@ -415,7 +415,6 @@ const actiVity = async () => {
       .setTitle(`${SERVER_NAME} | Help`)
       .setDescription('!s for search name player list\n+status <Message> - Adds a warning message to the server status embed\n+status clear - Clears the warning message\n+help - Displays the bots commands')
       .setTimestamp(new Date());
-      await new Promise(resolve => setTimeout(resolve, 0));
       msg.channel.send(embed)
     } else {
       let noPerms =  new Discord.MessageEmbed()
@@ -439,7 +438,7 @@ const actiVity = async () => {
     
     if (/!s /.test(msg.content)) {
         let text = msg.content.toLowerCase().substr(3,20);
-         getPlayers().then(async(players) => {
+        getPlayers().then(async(players) => {
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes(`${text}`);
         });
@@ -456,6 +455,7 @@ const actiVity = async () => {
         .setDescription(result.length > 0 ? result : 'No Players')
         .setTimestamp();
         log(LOG_LEVELS.INFO, 'Completed !s message');
+      await new Promise(resolve => setTimeout(resolve, 0));
       msg.channel.send(embed)
     } else {
       let noPerms =  new Discord.MessageEmbed()
@@ -472,6 +472,40 @@ const actiVity = async () => {
 });
 
   bot.on('message', async function (msg) {
+    
+    if (msg.content === '!all') {
+      getPlayers().then(async(players) => {
+      let result  = [];
+      let index = 1;
+      for (let player of players) {
+        result.push(`${index++}. ${player.name} | ID : ${player.id} | Ping : ${player.ping}\n`);
+      };
+      if (msg.member.hasPermission(PERMISSION)) {
+      let embed =  new Discord.MessageEmbed()
+      .setAuthor(msg.member.nickname ? msg.member.nickname : msg.author.tag, msg.author.displayAvatarURL())
+        .setColor("BLUE")
+        .setTitle(`All_players | ${SERVER_NAME}`)
+        .setDescription(result.length > 0 ? result : 'No Players')
+        .setTimestamp();
+        log(LOG_LEVELS.INFO, 'Completed !s message');
+       await new Promise(resolve => setTimeout(resolve, 0));
+      msg.channel.send(embed)
+    } else {
+      let noPerms =  new Discord.MessageEmbed()
+        .setAuthor(msg.member.nickname ? msg.member.nickname : msg.author.tag, msg.author.displayAvatarURL())
+        .setColor(0x2894C2)
+        .setTitle(`All_players | Error`)
+        .setDescription(`❌ You do not have the ${PERMISSION}, therefor you cannot run this command!`)
+        .setTimestamp(new Date());
+        log(LOG_LEVELS.INFO, 'Error !s message');
+        msg.channel.send(noPerms)
+    }  
+    });
+  } 
+});
+
+  bot.on('message', async function (msg) {
+
     if (msg.content === '!clear') {
         const Channel = msg.channel;
         const Messages = await Channel.messages.fetch({limit: 20});
