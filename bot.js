@@ -234,10 +234,9 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
     .setThumbnail(SERVER_LOGO)
     .setFooter(TICK_N % 2 === 0 ? `${SERVER_NAME}` : `${SERVER_NAME}`)
     .setTimestamp(new Date())
-    .addField('\n\u200b\nServer Name', `\`\`\`${SERVER_NAME}\`\`\``,false)
     if (STATUS !== undefined)
     {
-      embed.addField('📬 Server Notice:',`\`\`\`${STATUS}\`\`\`\n\u200b\n`);
+      embed.addField('📬 Server Notice:',`\`\`\`${STATUS}\`\`\`\u200b`);
       embed.setColor('#00f931')
     }
     return embed;
@@ -251,8 +250,7 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
     .setThumbnail(SERVER_LOGO)
     .addFields(
       { name: "Server Status:",          value: "```❌ Offline```",    inline: true },
-      { name: "Watching:",                value: "```--```",            inline: true },
-      { name: "Online Players:",         value: "```--```\n\u200b\n",  inline: true }
+      { name: "Online Players:",         value: "```--```\u200b",  inline: true }
     )
     sendOrUpdate(embed);
     LAST_COUNT = null;
@@ -267,10 +265,8 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
         let queue = dynamic['Queue'];
         let embed = UpdateEmbed()
         .addFields(
-          { name: "Server Status",            value: "```✅ Online```",                                                                                    inline: true },
-          { name: "Watching",                  value: `\`\`\`${queue === 'Enabled' || queue === undefined ? '0' : queue.split(':')[1].trim()}\`\`\``,        inline: true },
-          { name: "Online Players",           value: `\`\`\`${playersonline}/${maxplayers}\`\`\`\n\u200b\n`,                                              inline: true }
-          )
+          { name: "Server Status ",           value: "```✅ Online```",                                                                               inline: true },
+          { name: "Online Players",           value: `\`\`\`${playersonline}/${maxplayers}\`\`\`\u200b`,                                              inline: true })
         .setThumbnail(SERVER_LOGO)
 
         sendOrUpdate(embed);
@@ -419,6 +415,7 @@ const actiVity = async () => {
       .setTitle(`${SERVER_NAME} | Help`)
       .setDescription('!s for search name player list\n+status <Message> - Adds a warning message to the server status embed\n+status clear - Clears the warning message\n+help - Displays the bots commands')
       .setTimestamp(new Date());
+      await new Promise(resolve => setTimeout(resolve, 0));
       msg.channel.send(embed)
     } else {
       let noPerms =  new Discord.MessageEmbed()
@@ -483,7 +480,7 @@ const actiVity = async () => {
             if (msg.author.bot) msg.delete()
         });
         log(LOG_LEVELS.INFO, 'Completed !Clear');
-  } 
+  }
 });
 // ----------------------------------------------------------------------------------------------
   
