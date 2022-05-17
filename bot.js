@@ -13,7 +13,7 @@ const { paddedFullWidth, errorWrap } = require('./utils.js');
 // const fetchretry = require('fetch-retry')(fetch);
 // const fetch = require('@vercel/fetch')(require('node-fetch'));
 // const fetch = require('@vercel/fetch-retry')(require('node-fetch'));
-const fetch = require('@vercel/fetch-cached-dns')(require('node-fetch'));
+const fetch = require('@vercel/fetch')(require('node-fetch'));
 // -----------------------------------------------------------
 
 const LOG_LEVELS = {
@@ -88,9 +88,21 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
+const fetch_retry = async (url, options, n=FETCHTEST_LOOP) => {
+    for (let i = 0; i < n; i++) {
+      console.log(`trying GET '${url}' [${i + 1} of ${n}]`);
+        try {
+            return await fetch(url, options);
+        } catch (err) {
+            const isLastAttempt = i + 1 === n;
+            if (isLastAttempt) throw err;
+        }
+    }
+};
+
   async function getPlayers() {
     
-  const res = await fetch(URL_PLAYERS);
+  const res = await fetch_retry(URL_PLAYERS);
   const data = await res.json();
 
   if (res.ok) return data;
@@ -100,7 +112,7 @@ exports.start = function(SETUP) {
 
   async function getDynamic() {
 
-  const res = await fetch(URL_DYNAMIC);
+  const res = await fetch_retry(URL_DYNAMIC);
   const data = await res.json();
 
   if (res.ok) return data;
