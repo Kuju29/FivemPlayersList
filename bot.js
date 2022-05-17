@@ -88,134 +88,6 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
-//   const fetchtest = async (url, opts, tries=FETCHTEST_LOOP) => { // << "tries=num" = The number of times to test for server errors.
-//   const errs = [];
-
-//   for (let i = 0; i < tries; i+=1) {
-//    // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
-
-//     try {
-//       return await fetch(url, opts);
-//     }
-//     catch (err) {
-//       errs.push(err);
-//     }
-
-// }
-
-//   throw errs;
-// }; // y  y
-
-
-
-// const fetchtest = async (url, options, tries) => {
-//     try {
-//         return await fetch(url, options);
-//     } catch(err) {
-//         if (tries === 1 || tries < 1) throw err;
-//         return await fetchtest(url, options, tries + 1);
-//     }
-// }; // y n
-
-// const fetchtest = (url, options, n) => fetch(url, options).catch(function(error) {
-//     if (n === 1) throw error;
-//     return fetchtest(url, options, n - 1); y
-// }); // y y
-
-// const fetchtest = async (url, options, tries) => {
-//     for (let i = 0; i < tries; i++) {
-//       console.log(`trying GET [${i + 1} of ${tries}]`);
-//         try {
-//             return await fetch(url, options);
-//         } catch (err) {
-//             const isLastAttempt = i + 1 === tries;
-//             if (isLastAttempt) throw err;
-//         }
-//     }
-// }; // น่าใช้ y
-
-// const fetchtest = async (url, options, n) => {
-//     try {
-//         return await fetch(url, options)
-//     } catch(err) {
-//         if (n === 1 || n < 1) throw err;
-//         return await fetchtest(url, options, n - 1);
-//     }
-// }; // น่าใช้ y
-
-  // const fetchtest = (url) => {
-  //   return new Promise((resolve, reject) => {
-  //     let attempts = 1;
-  //     const fetchtest = (url, n) => {
-  //       return fetch(url).then(resolve).catch(function (error) {
-  //       if (n === 1) reject(error)
-  //       else
-  //       setTimeout(() => {
-  //         attempts ++
-  //         fetchtest(url, n - 1);
-  //       }, attempts * 1000)
-  //     });
-  //   }
-  //     return fetchtest(url, 5);
-  //   });
-  // }
-
-  // async function getPlayers() {
-  //   return new Promise((sendSuccess, sendError) => {
-  //     fetchtest(URL_PLAYERS, {cache: "no-cache"}).then(async (res) => {
-  //       if (!res .ok) {
-  //           throw await res.json();
-  //       }
-  //       return res.json()
-
-  //     }).then(data => {
-  //         sendSuccess(data);
-  //     }).catch(err => {
-  //         sendError(err);
-  //     })
-  //   })
-  // }
-
-  // async function getDynamic() {
-  //   return new Promise((sendSuccess, sendError) => {
-  //     fetchtest(URL_DYNAMIC, {cache: "no-cache"}).then(async (res) => {
-  //       if (!res .ok) {
-  //           throw await res.json();
-  //       }
-  //       return res.json()
-
-  //     }).then(data => {
-  //         sendSuccess(data);
-  //     }).catch(err => {
-  //         sendError(err);
-  //     })
-  //   })
-  // }
-
-    // const getPlayers = async () => {
-    //    try {
-    //      const res = await fetch(URL_PLAYERS);
-        
-    //         let data = res;
-    //         return data;
-
-    //       } catch (err) {
-    //           return null;
-    //       }
-    //   };
-
-    // const getDynamic = async () => {
-    //    try {
-    //      const res = await fetch(URL_DYNAMIC);
-        
-    //         let data = res;
-    //         return data;
-
-    //       } catch (err) {
-    //           return null;
-    //       }
-    //   };
-
   async function getPlayers() {
     
   const res = await fetch(URL_PLAYERS);
@@ -564,9 +436,10 @@ const actiVity = async () => {
 
   bot.on('message', async function (msg) {
 
-    if (msg.content === '!clear') {
+    if (/!clear /.test(msg.content)) {
+        let num = msg.content.toLowerCase().substr(7,9);
         const Channel = msg.channel;
-        const Messages = await Channel.messages.fetch({limit: 20});
+        const Messages = await Channel.messages.fetch({limit: num});
 
         Messages.forEach(msg => {
             if (msg.author.bot) msg.delete()
