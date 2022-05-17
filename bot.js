@@ -4,12 +4,16 @@ const Discord = require('discord.js');
 const { paddedFullWidth, errorWrap } = require('./utils.js');
 
 // Retrieve data from API ----------------------------------
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 // const fetchTimeout = require('fetch-timeout');
 // const fivereborn = require('fivereborn-query');
 // const FiveM = require("fivem"); // Import the npm package.
 // const fivem = require("discord-fivem-api");
-const axios = require('axios');
+// const axios = require('axios');
+// const fetchretry = require('fetch-retry')(fetch);
+// const fetch = require('@vercel/fetch')(require('node-fetch'));
+// const fetch = require('@vercel/fetch-retry')(require('node-fetch'));
+const fetch = require('@vercel/fetch-cached-dns')(require('node-fetch'));
 // -----------------------------------------------------------
 
 const LOG_LEVELS = {
@@ -84,99 +88,153 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
-  const fetchtest = async (url, opts, tries=FETCHTEST_LOOP) => { // << "tries=num" = The number of times to test for server errors.
-  const errs = [];
+//   const fetchtest = async (url, opts, tries=FETCHTEST_LOOP) => { // << "tries=num" = The number of times to test for server errors.
+//   const errs = [];
 
-  for (let i = 0; i < tries; i+=1) {
-   // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
+//   for (let i = 0; i < tries; i+=1) {
+//    // console.log(`trying GET [${i + 1} of ${tries}]`); // If you want to display test count data, remove "//" before console.log.
 
-    try {
-      return await axios.get(url, opts);
-    }
-    catch (err) {
-      errs.push(err);
-    }
+//     try {
+//       return await fetch(url, opts);
+//     }
+//     catch (err) {
+//       errs.push(err);
+//     }
 
-}
+// }
 
-  throw errs;
-};
+//   throw errs;
+// }; // y  y
+
+
+
+// const fetchtest = async (url, options, tries) => {
+//     try {
+//         return await fetch(url, options);
+//     } catch(err) {
+//         if (tries === 1 || tries < 1) throw err;
+//         return await fetchtest(url, options, tries + 1);
+//     }
+// }; // y n
+
+// const fetchtest = (url, options, n) => fetch(url, options).catch(function(error) {
+//     if (n === 1) throw error;
+//     return fetchtest(url, options, n - 1); y
+// }); // y y
+
+// const fetchtest = async (url, options, tries) => {
+//     for (let i = 0; i < tries; i++) {
+//       console.log(`trying GET [${i + 1} of ${tries}]`);
+//         try {
+//             return await fetch(url, options);
+//         } catch (err) {
+//             const isLastAttempt = i + 1 === tries;
+//             if (isLastAttempt) throw err;
+//         }
+//     }
+// }; // น่าใช้ y
+
+// const fetchtest = async (url, options, n) => {
+//     try {
+//         return await fetch(url, options)
+//     } catch(err) {
+//         if (n === 1 || n < 1) throw err;
+//         return await fetchtest(url, options, n - 1);
+//     }
+// }; // น่าใช้ y
+
+  // const fetchtest = (url) => {
+  //   return new Promise((resolve, reject) => {
+  //     let attempts = 1;
+  //     const fetchtest = (url, n) => {
+  //       return fetch(url).then(resolve).catch(function (error) {
+  //       if (n === 1) reject(error)
+  //       else
+  //       setTimeout(() => {
+  //         attempts ++
+  //         fetchtest(url, n - 1);
+  //       }, attempts * 1000)
+  //     });
+  //   }
+  //     return fetchtest(url, 5);
+  //   });
+  // }
 
   // async function getPlayers() {
+  //   return new Promise((sendSuccess, sendError) => {
+  //     fetchtest(URL_PLAYERS, {cache: "no-cache"}).then(async (res) => {
+  //       if (!res .ok) {
+  //           throw await res.json();
+  //       }
+  //       return res.json()
+
+  //     }).then(data => {
+  //         sendSuccess(data);
+  //     }).catch(err => {
+  //         sendError(err);
+  //     })
+  //   })
+  // }
+
+  // async function getDynamic() {
+  //   return new Promise((sendSuccess, sendError) => {
+  //     fetchtest(URL_DYNAMIC, {cache: "no-cache"}).then(async (res) => {
+  //       if (!res .ok) {
+  //           throw await res.json();
+  //       }
+  //       return res.json()
+
+  //     }).then(data => {
+  //         sendSuccess(data);
+  //     }).catch(err => {
+  //         sendError(err);
+  //     })
+  //   })
+  // }
+
+    // const getPlayers = async () => {
+    //    try {
+    //      const res = await fetch(URL_PLAYERS);
+        
+    //         let data = res;
+    //         return data;
+
+    //       } catch (err) {
+    //           return null;
+    //       }
+    //   };
+
+    // const getDynamic = async () => {
+    //    try {
+    //      const res = await fetch(URL_DYNAMIC);
+        
+    //         let data = res;
+    //         return data;
+
+    //       } catch (err) {
+    //           return null;
+    //       }
+    //   };
+
+  async function getPlayers() {
     
-  // const res = await fetchtest(URL_PLAYERS);
-  // const data = await res.json();
+  const res = await fetch(URL_PLAYERS);
+  const data = await res.json();
 
-  // if (res.ok) {
-  //       return data;
-  //     }
-  // }
+  if (res.ok) return data;
+  if (!res.ok) return null;
 
-  // async function getDynamic() {
+  }
 
-  // const res = await fetchtest(URL_DYNAMIC);
-  // const data = await res.json();
+  async function getDynamic() {
 
-  // if (res.ok) {
-  //       return data;
-  //     }
-  // }
+  const res = await fetch(URL_DYNAMIC);
+  const data = await res.json();
 
-  // async function getPlayers() {
-  //   return new Promise((sendSuccess, sendError) => {
-  //     fetchtest(URL_PLAYERS, {cache: "no-store"}).then(async (res) => {
-  //       if (!res .ok) {
-  //           throw await res.json();
-  //       }
-  //       return res.json()
+  if (res.ok) return data;
+  if (!res.ok) return null;
 
-  //     }).then(data => {
-  //         sendSuccess(data);
-  //     }).catch(err => {
-  //         sendError(err);
-  //     })
-  //   })
-  // }
-
-  // async function getDynamic() {
-  //   return new Promise((sendSuccess, sendError) => {
-  //     fetchtest(URL_DYNAMIC, {cache: "no-store"}).then(async (res) => {
-  //       if (!res .ok) {
-  //           throw await res.json();
-  //       }
-  //       return res.json()
-
-  //     }).then(data => {
-  //         sendSuccess(data);
-  //     }).catch(err => {
-  //         sendError(err);
-  //     })
-  //   })
-  // }
-
-    const getPlayers = async () => {
-       try {
-         const res = await fetchtest(URL_PLAYERS);
-        
-            let data = res;
-            return data.data;
-
-          } catch (err) {
-              return null;
-          }
-      };
-
-    const getDynamic = async () => {
-       try {
-         const res = await fetchtest(URL_DYNAMIC);
-        
-            let data = res;
-            return data.data;
-
-          } catch (err) {
-              return null;
-          }
-      };
+  }
 
   module.exports.getPlayers = getPlayers;
   module.exports.getDynamic = getDynamic;
