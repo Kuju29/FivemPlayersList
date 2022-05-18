@@ -80,7 +80,6 @@ exports.start = function(SETUP) {
   var MESSAGE;
   var LAST_COUNT;
   var STATUS;
-  var STATUS;
   var url = SETUP.URL_SERVER;
   var ip = url.split('/')[2].split(':')[0];
   var port = url.split('/')[2].split(':')[1];
@@ -90,7 +89,7 @@ exports.start = function(SETUP) {
 // fetch API ---------------------------------------------------
 const fetch_retry = async (url, options, n=FETCHTEST_LOOP) => {
     for (let i = 0; i < n; i++) {
-      console.log(`trying GET '${url}' [${i + 1} of ${n}]`);
+      // console.log(`trying GET '${url}' [${i + 1} of ${n}]`);
         try {
             return await fetch(url, options);
         } catch (err) {
@@ -102,22 +101,34 @@ const fetch_retry = async (url, options, n=FETCHTEST_LOOP) => {
 
   async function getPlayers() {
     
-  const res = await fetch_retry(URL_PLAYERS);
-  const data = await res.json();
+    try {
 
-  if (res.ok) return data;
-  if (!res.ok) return null;
-
+      const res = await fetch_retry(URL_PLAYERS);
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      } else {
+        return null;
+      }
+      } catch(err){
+      return null;
+    }
   }
 
   async function getDynamic() {
+    
+    try {
 
-  const res = await fetch_retry(URL_DYNAMIC);
-  const data = await res.json();
-
-  if (res.ok) return data;
-  if (!res.ok) return null;
-
+      const res = await fetch_retry(URL_DYNAMIC);
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      } else {
+        return null;
+      }
+      } catch(err){
+      return null;
+    }
   }
 
   module.exports.getPlayers = getPlayers;
@@ -184,7 +195,7 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
     return embed;
   };
 
-  const offline = function() {
+   const offline = function() {
     log(LOG_LEVELS.SPAM, Array.from(arguments));
     if (LAST_COUNT !== null) log(LOG_LEVELS.INFO,`Server offline at message ${URL_SERVER} (${URL_PLAYERS} ${URL_INFO})`);
     let embed = UpdateEmbed()
@@ -204,7 +215,6 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
         let playersonline = dynamic.clients;
         let maxplayers = dynamic.sv_maxclients;
         if (playersonline !== LAST_COUNT) log(LOG_LEVELS.INFO,`${playersonline} players`);
-        let queue = dynamic['Queue'];
         let embed = UpdateEmbed()
         .addFields(
           { name: "Server Status ",           value: "```✅ Online```",                                                                               inline: true },
@@ -452,7 +462,7 @@ const actiVity = async () => {
         let num = msg.content.toLowerCase().substr(7,9);
         const Channel = msg.channel;
         const Messages = await Channel.messages.fetch({limit: num});
-
+        await new Promise(resolve => setTimeout(resolve, 0));
         Messages.forEach(msg => {
             if (msg.author.bot) msg.delete()
         });
