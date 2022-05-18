@@ -101,34 +101,22 @@ const fetch_retry = async (url, options, n=FETCHTEST_LOOP) => {
 
   async function getPlayers() {
     
-    try {
+  const res = await fetch_retry(URL_PLAYERS);
+  const data = await res.json();
 
-      const res = await fetch_retry(URL_PLAYERS);
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      } else {
-        return null;
-      }
-      } catch(err){
-      return null;
-    }
+  if (res.ok) return data;
+  if (!res.ok) return null;
+
   }
 
   async function getDynamic() {
-    
-    try {
 
-      const res = await fetch_retry(URL_DYNAMIC);
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      } else {
-        return null;
-      }
-      } catch(err){
-      return null;
-    }
+  const res = await fetch_retry(URL_DYNAMIC);
+  const data = await res.json();
+
+  if (res.ok) return data;
+  if (!res.ok) return null;
+
   }
 
   module.exports.getPlayers = getPlayers;
