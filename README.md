@@ -49,3 +49,4 @@ Queue script | https://github.com/anderscripts/FiveM_Queue |
 ggorlen | https://stackoverflow.com/questions/60289882 |
 blankydev | https://github.com/blankydev/js-fivem-api |
 xliel | https://github.com/xliel/Discord-Fivem-Api |
+vercel | https://www.npmjs.com/package/@vercel/fetch |
