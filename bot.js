@@ -527,15 +527,23 @@ const actiVity = async () => {
         result.push(`${index++}. ${player.name} | ID : ${player.id} | Ping : ${player.ping}\n`);
       };
       if (msg.member.hasPermission(PERMISSION)) {
-      let embed =  new Discord.MessageEmbed()
-      .setAuthor(msg.member.nickname ? msg.member.nickname : msg.author.tag, msg.author.displayAvatarURL())
-        .setColor("BLUE")
-        .setTitle(`All_players | ${SERVER_NAME}`)
-        .setDescription(result.length > 0 ? result : 'No Players')
-        .setTimestamp();
-        log(LOG_LEVELS.INFO, 'Completed !s message');
-       await new Promise(resolve => setTimeout(resolve, 0));
-      msg.channel.send(embed)
+      let chunks = Discord.Util.splitMessage(result);
+      let embed = new Discord.MessageEmbed().setTitle(`All_players | ${SERVER_NAME}`);
+
+      if (chunks.length > 1) {
+          chunks.forEach((chunk, i) =>
+             msg.channel.send(
+              embed
+              .setAuthor(msg.member.nickname ? msg.member.nickname : msg.author.tag, msg.author.displayAvatarURL())
+              .setDescription(chunk)
+              .setFooter(`Part ${i + 1} / ${chunks.length}`),
+             ),
+           );
+        log(LOG_LEVELS.INFO, 'Completed !all in message');
+          } else {
+           msg.channel.send(embed.setDescription(result.length > 0 ? result : 'No Players'));
+        log(LOG_LEVELS.INFO, 'Completed !all No Players');
+      };
     } else {
       let noPerms =  new Discord.MessageEmbed()
         .setAuthor(msg.member.nickname ? msg.member.nickname : msg.author.tag, msg.author.displayAvatarURL())
