@@ -4,15 +4,6 @@ const Discord = require('discord.js');
 const { paddedFullWidth, errorWrap } = require('./utils.js');
 
 // Retrieve data from API ----------------------------------
-// const fetch = require('node-fetch');
-// const fetchTimeout = require('fetch-timeout');
-// const fivereborn = require('fivereborn-query');
-// const FiveM = require("fivem"); // Import the npm package.
-// const fivem = require("discord-fivem-api");
-// const axios = require('axios');
-// const fetchretry = require('fetch-retry')(fetch);
-// const fetch = require('@vercel/fetch')(require('node-fetch'));
-// const fetch = require('@vercel/fetch-retry')(require('node-fetch'));
 const fetch = require('@vercel/fetch')(require('node-fetch'));
 const retry = require('async-retry');
 const debug = require('debug')('fetch-retry');
@@ -93,30 +84,6 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
-// const fetch_retry = async (url, options, n=FETCHTEST_LOOP) => {
-//     for (let i = 0; i < n; i++) {
-//       // console.log(`trying GET '${url}' [${i + 1} of ${n}]`);
-//         try {
-//             return await fetch(url, options);
-//         } catch (err) {
-//             const isLastAttempt = i + 1 === n;
-//             if (isLastAttempt) throw err;
-//         }
-//     }
-// };
-
- // const fetch_retry = async (url, options, n=FETCHTEST_LOOP) => {
- //     let error;
- //     for (let i = 0; i < n; i++) {
- //        try {
- //             return await fetch(url, options);
- //         } catch (err) {
- //             error = err;
- //         }
- //     }
- //     throw error;
- // };
-
   async function fetch_retry(url, opts = {}) {
     const retryOpts = Object.assign(
       {
@@ -200,10 +167,10 @@ exports.start = function(SETUP) {
     // backward compat
     this.code = this.status = this.statusCode = res.status;
     this.url = res.url;
+   }
   }
-}
 
-exports.ResponseError = ResponseError;
+  exports.ResponseError = ResponseError;
 
   async function getPlayers() {
     
