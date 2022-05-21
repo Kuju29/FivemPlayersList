@@ -84,6 +84,14 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
+  function isClientError(err) {
+   if (!err) return false;
+   return (
+      err.code === 'ERR_UNESCAPED_CHARACTERS' ||
+      err.message === 'Request path contains unescaped characters'
+   );
+  }
+  
   async function fetch_retry(url, opts = {}) {
     const retryOpts = Object.assign(
       {
