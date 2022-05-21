@@ -33,6 +33,7 @@ Way #1 | Way #2
 Command | Description 
 ------------ | -------------
 `!s <Message>` | Find out which players are currently online.
+`!all` | All players on yourserver.
 `!clear` | Clear msg from bots limit 20.
 `+status <Message>` | Adds a warning message to the server status embed
 `+status clear` | Clears the warning message
