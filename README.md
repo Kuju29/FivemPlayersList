@@ -1,5 +1,5 @@
 # Fivem Players List
-[![](https://img.shields.io/github/forks/Kuju29/FivemPlayersList?label=Fork&style=social)](https://github.com/Kuju29/FivemPlayersList/fork)
+[![](https://img.shields.io/github/languages/code-size/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList)
 [![](https://img.shields.io/badge/discord.js-v12.5.3-brightgreen)](https://github.com/Kuju29/FivemPlayersList/)
 [![](https://img.shields.io/node/v/bot)](https://github.com/Kuju29/FivemPlayersList/)
 [![](https://img.shields.io/maintenance/yes/2022)](https://github.com/Kuju29/FivemPlayersList/)
