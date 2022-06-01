@@ -22,20 +22,20 @@
 ## How to start/run <kbd>**Just click "start.bat" or follow the method below.**
 
   
->- Download file from code menu or `git clone https://github.com/Kuju29/FivemPlayersList`
->- Open command line : [Example](https://user-images.githubusercontent.com/22098092/165669382-26958438-b58a-4bb7-90a9-bd7ce55f7210.png)
->- `npm i` or `npm install`
->- `npm start` or `node ./index.js`
+> 1.Download file from code menu or `git clone https://github.com/Kuju29/FivemPlayersList`\
+> 2.Open command line : [Example](https://user-images.githubusercontent.com/22098092/165669382-26958438-b58a-4bb7-90a9-bd7ce55f7210.png)\
+> 3.`npm i` or `npm install`\
+> 4.`npm start` or `node ./index.js`
 
   
 ## Commands
 
->- `!s <Message>`  Find out which players are currently online. 
->- `!all`  All players on yourserver. 
->- `!clear`  Clear msg from bots limit 20.  
->- `+status <Message>`  Adds a warning message to the server status embed  
->- `+status clear`  Clears the warning message
->- `+help`  Displays the bots commands
+> `!s <Message>`  Find out which players are currently online. \
+> `!all`  All players on yourserver. \
+> `!clear`  Clear msg from bots limit 20.  \
+> `+status <Message>`  Adds a warning message to the server status embed  \
+> `+status clear`  Clears the warning message\
+> `+help`  Displays the bots commands
 
     
 ## Credits
