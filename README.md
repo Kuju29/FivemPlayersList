@@ -7,7 +7,8 @@
 [![](https://img.shields.io/github/languages/count/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList/)
 [![](https://img.shields.io/github/languages/top/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList/)
 
-<sub>A Discord bot displays a list of players and searches, as well as turning the server on and off.
+### [Download](https://github.com/Kuju29/FivemPlayersList/archive/refs/heads/main.zip)
+  
 - Updated & Edited by [Kuju29](https://github.com/Kuju29)</sub>
 
 <kbd> ![image](https://user-images.githubusercontent.com/22098092/165664830-ef78dc7d-aa21-432f-877d-0c1784a0783c.png)
