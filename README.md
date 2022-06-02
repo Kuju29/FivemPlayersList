@@ -7,7 +7,7 @@
 [![](https://img.shields.io/github/languages/count/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList/)
 [![](https://img.shields.io/github/languages/top/Kuju29/FivemPlayersList)](https://github.com/Kuju29/FivemPlayersList/)
 
-### [Download](https://github.com/Kuju29/FivemPlayersList/archive/refs/heads/main.zip)
+### Download: [Fivem Players List](https://github.com/Kuju29/FivemPlayersList/archive/refs/heads/main.zip)
   
 - Updated & Edited by [Kuju29](https://github.com/Kuju29)</sub>
 
