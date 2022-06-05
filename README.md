@@ -22,9 +22,8 @@
   
 ## How to start/run <kbd>**Just click "start.bat" or follow the method below.**
 
-  
-> 1.[Download file](https://github.com/Kuju29/FivemPlayersList/archive/refs/heads/main.zip) or `git clone https://github.com/Kuju29/FivemPlayersList`\
-> 2.Open command line : [Example](https://user-images.githubusercontent.com/22098092/165669382-26958438-b58a-4bb7-90a9-bd7ce55f7210.png)\
+> 1.Open command line : [Example](https://user-images.githubusercontent.com/22098092/165669382-26958438-b58a-4bb7-90a9-bd7ce55f7210.png)\
+> 2.`git clone https://github.com/Kuju29/FivemPlayersList`\
 > 3.`npm i` or `npm install`\
 > 4.`npm start` or `node ./index.js`
 
