@@ -30,8 +30,8 @@
     "LOG_LEVEL": "2", #: logs displayed (N/A)
     "PERMISSION": "MANAGE_MESSAGES", #: (N/A)
     "BOT_TOKEN": "[BOT TOKEN]", #: https://discord.com/developers/applications
-    "CHANNEL_ID": "617873518960574464", #: Post announcements (N/A)
-    "MESSAGE_ID": "828635715121840178", #: (N/A)
+    "CHANNEL_ID": "617873518960574464", #: Change it when you want a notification in discord room
+    "MESSAGE_ID": "828635715121840178", #: Change it when you want a notification in discord room
     "SUGGESTION_CHANNEL": "617873319609368669", #: (N/A)
     "BUG_CHANNEL": "617873444238786617",  #: (N/A)
     "BUG_LOG_CHANNEL": "657070256925442058",  #: (N/A)
