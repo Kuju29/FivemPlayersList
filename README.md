@@ -19,6 +19,28 @@
 ## Note  
 <sub>In config.json "FETCHTEST_LOOP" Affects the speed of the server on and off notification. If your bot server or fivem server is stable Should be adjusted to low, recommend 2 or 3.</sub>
 
+## Config
+```json
+{
+    "URL_SERVER": "http://127.0.0.1:30120", #: url server
+    "SERVER_NAME": "Name server", #: name server
+    "MAX_PLAYERS": "850", #: max players (N/A)
+    "SERVER_LOGO": "https://www.catdumb.com/wp-content/uploads/2022/04/2-75.jpg", #: server Logo
+    "EMBED_COLOR": "#b434eb", #: text box color (N/A)
+    "LOG_LEVEL": "2", #: logs displayed (N/A)
+    "PERMISSION": "MANAGE_MESSAGES", #: (N/A)
+    "BOT_TOKEN": "[BOT TOKEN]", #: https://discord.com/developers/applications
+    "CHANNEL_ID": "617873518960574464", #: Post announcements (N/A)
+    "MESSAGE_ID": "828635715121840178", #: (N/A)
+    "SUGGESTION_CHANNEL": "617873319609368669", #: (N/A)
+    "BUG_CHANNEL": "617873444238786617",  #: (N/A)
+    "BUG_LOG_CHANNEL": "657070256925442058",  #: (N/A)
+    "LOG_CHANNEL": "617873550648279051",  #: (N/A)
+    "FETCHTEST_LOOP": "4",  #: number of retries when server fails
+    "UPDATE_TIME": "4000",  #: update time
+    "RESTART_TIMES": "" #: (N/A)
+  }
+```
   
 ## How to start/run <kbd>**Just click "start.bat" or follow the method below.**
 
