@@ -325,8 +325,8 @@ const actiVity = async () => {
         }
   
     }).catch ((err) =>{
-          bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-          log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
+          // bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+          log(LOG_LEVELS.INFO,`Catch ERROR at actiVity`);
     });
     await new Promise(resolve => setTimeout(resolve, UPDATE_TIME));
     actiVity();
