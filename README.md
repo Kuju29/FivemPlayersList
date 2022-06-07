@@ -18,7 +18,21 @@
 
 ## Note  
 <sub>In config.json "FETCHTEST_LOOP" Affects the speed of the server on and off notification. If your bot server or fivem server is stable Should be adjusted to low, recommend 2 or 3.</sub>
-
+  
+<sub>If you want to disable message, just add `//` before the message as in the example.</sub>
+```js
+    bot.user.setPresence({
+      activity: {
+          name: `${SERVER_NAME}`,
+          type: "WATCHING"
+      }, status: "online"
+    })
+    
+    // bot.setInterval(updateMessage, UPDATE_TIME); // <<< this Message
+    actiVity(); // <<< this activity
+    
+```
+  
 ## Config
 ```json
 {
