@@ -185,9 +185,11 @@ exports.start = function(SETUP) {
   const res = await fetch_retry(URL_PLAYERS);
   const data = await res.json();
 
-  if (res.ok) return data;
-  if (!res.ok) return null;
-
+  if (res.ok) {
+      return data;
+    } else {
+      return null;
+    }
   }
 
   async function getDynamic() {
@@ -195,13 +197,40 @@ exports.start = function(SETUP) {
   const res = await fetch_retry(URL_DYNAMIC);
   const data = await res.json();
 
-  if (res.ok) return data;
-  if (!res.ok) return null;
+  if (res.ok) {
+      return data;
+    } else {
+      return null;
+    }
+  }
+  
+  async function playerall() {
 
+  const res = await fetch(URL_SERVER);
+  const text = await res.text();
+
+    let $ = cheerio.load(text);
+    let data = $('span.players').text().match(/[0-9]+/);
+    
+    if (data >= 0) {
+      return data;
+    } else {
+      return null;
+    }
   }
 
+  const checkOnlineStatus = async () => {
+  try {
+    const online = await fetch(URL_SERVER);
+    return online.status >= 200 && online.status < 300;
+  } catch (err) {
+    return false;
+    }
+  }
   module.exports.getPlayers = getPlayers;
   module.exports.getDynamic = getDynamic;
+  module.exports.playerall = playerall;
+  module.exports.checkOnlineStatus = checkOnlineStatus;
 // ---------------------------------------------------------
 
   const log = function(level,message) {
@@ -279,10 +308,10 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
 
   const updateMessage = async () => {
-    getDynamic().then(async(dynamic) => {
+    checkOnlineStatus().then(async() => {
 
-        let playersonline = dynamic.clients;
-        let maxplayers = dynamic.sv_maxclients;
+        let playersonline = (await getDynamic()).clients;
+        let maxplayers = (await getDynamic()).sv_maxclients;
         if (playersonline !== LAST_COUNT) log(LOG_LEVELS.INFO,`${playersonline} players`);
         let embed = UpdateEmbed()
         .addFields(
@@ -304,10 +333,10 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
   
 const actiVity = async () => {
-      getDynamic().then(async(dynamic) => {
+      checkOnlineStatus().then(async() => {
         let players = (await getPlayers());
-        let playersonline = dynamic.clients;
-        let maxplayers = dynamic.sv_maxclients;
+        let playersonline = (await getDynamic()).clients;
+        let maxplayers = (await getDynamic()).sv_maxclients;
         let police = players.filter(function(person) {
         return person.name.toLowerCase().includes("police");
         });
@@ -319,15 +348,13 @@ const actiVity = async () => {
         } else if (playersonline >= 1) {
           bot.user.setActivity(`💨 ${playersonline}/${maxplayers} 👮‍ ${police.length}`,{'type':'WATCHING'});
           log(LOG_LEVELS.INFO,`${playersonline} update at actiVity`);
-        } else {
-          bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-          log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
         }
-  
+
     }).catch ((err) =>{
           bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-          log(LOG_LEVELS.INFO,`Catch ERROR at actiVity`);
+          log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
     });
+  
     await new Promise(resolve => setTimeout(resolve, UPDATE_TIME));
     actiVity();
 }
