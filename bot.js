@@ -518,6 +518,41 @@ const actiVity = async () => {
     });
   } 
 });
+  
+  bot.on('message', async function (msg) {
+    
+    if (/!id /.test(msg.content)) {
+      let num = msg.content.match(/[0-9]/g).join('').valueOf();
+      getPlayers().then(async(players) => {
+      let playerdata = players.filter(players => players.id == num);
+      let result  = [];
+      let index = 1;
+      for (let player of playerdata) {
+        result.push(`${index++}. ${player.name} | ID : ${player.id} | Ping : ${player.ping}\n`);
+      };
+      if (msg.member.hasPermission(PERMISSION)) {
+      let embed =  new Discord.MessageEmbed()
+      .setAuthor(msg.member.nickname ? msg.member.nickname : msg.author.tag, msg.author.displayAvatarURL())
+        .setColor("BLUE")
+        .setTitle(`Search player | ${SERVER_NAME}`)
+        .setDescription(result.length > 0 ? result : 'No Players')
+        .setTimestamp();
+        log(LOG_LEVELS.INFO, 'Completed !s message');
+      await new Promise(resolve => setTimeout(resolve, 0));
+      msg.channel.send(embed)
+    } else {
+      let noPerms =  new Discord.MessageEmbed()
+        .setAuthor(msg.member.nickname ? msg.member.nickname : msg.author.tag, msg.author.displayAvatarURL())
+        .setColor(0x2894C2)
+        .setTitle(`Search player | Error`)
+        .setDescription(`❌ You do not have the ${PERMISSION}, therefor you cannot run this command!`)
+        .setTimestamp(new Date());
+        log(LOG_LEVELS.INFO, 'Error !s message');
+        msg.channel.send(noPerms)
+    }  
+    });
+  } 
+});
 
   bot.on('message', async function (msg) {
     
