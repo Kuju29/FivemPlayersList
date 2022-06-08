@@ -355,7 +355,8 @@ const actiVity = async () => {
 
       } else {
 
-        var date = new Date(new Date().toLocaleString("TH", {timeZone: "Asia/Bangkok"}));
+//         var date = new Date(new Date().toLocaleString("TH", {timeZone: "Asia/Bangkok"}));
+        var date = new Date();
         var hours = date.getHours();
         var minutes = String(date.getMinutes()).padStart(2, "0");
         var today = hours + "." + minutes;
