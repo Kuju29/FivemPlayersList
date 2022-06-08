@@ -333,7 +333,10 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
   };
   
 const actiVity = async () => {
-      checkOnlineStatus().then(async() => {
+      checkOnlineStatus().then(async(server) => {
+
+      if (server) {
+        
         let players = (await getPlayers());
         let playersonline = (await getDynamic()).clients;
         let maxplayers = (await getDynamic()).sv_maxclients;
@@ -350,10 +353,37 @@ const actiVity = async () => {
           log(LOG_LEVELS.INFO,`${playersonline} update at actiVity`);
         }
 
-    }).catch ((err) =>{
-          bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-          log(LOG_LEVELS.INFO,`Offline or ERROR at actiVity`);
-    });
+      } else {
+
+        var hours = new Date().getHours();
+        var minutes = new Date().getMinutes();
+        var today = hours + "." + minutes;
+        
+            bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+            log(LOG_LEVELS.INFO,`Offline server failure at actiVity`);
+        
+// ----------- Fixed showing offline when server failure only at set time. --------------
+//         if ((today >= 23.30) && (today <= 0.30)) {
+//             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+//             log(LOG_LEVELS.INFO,`Offline 0 at actiVity`);
+//           } else if ((today >= 5.30) && (today <= 6.30)) {
+//             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+//             log(LOG_LEVELS.INFO,`Offline 6 at actiVity`);
+//           } else if ((today >= 11.30) && (today <= 12.30)) {
+//             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+//             log(LOG_LEVELS.INFO,`Offline 12 at actiVity`);
+//           } else if ((today >= 17.30) && (today <= 18.30)) {
+//              bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+//             log(LOG_LEVELS.INFO,`Offline 18 at actiVity`);
+//           } else {
+//             log(LOG_LEVELS.INFO,`not time at actiVity`);
+//           }
+// ---------------------------------------------------------------------------------------
+        }
+
+      }).catch ((err) =>{
+        log(LOG_LEVELS.INFO,`Catch ERROR at actiVity`);
+      });
   
     await new Promise(resolve => setTimeout(resolve, UPDATE_TIME));
     actiVity();
