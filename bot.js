@@ -355,15 +355,16 @@ const actiVity = async () => {
 
       } else {
 
-        var hours = new Date().getHours();
-        var minutes = new Date().getMinutes();
+        var date = new Date(new Date().toLocaleString("TH", {timeZone: "Asia/Bangkok"}));
+        var hours = date.getHours();
+        var minutes = String(date.getMinutes()).padStart(2, "0");
         var today = hours + "." + minutes;
         
             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
             log(LOG_LEVELS.INFO,`Offline server failure at actiVity`);
         
 // ----------- Fixed showing offline when server failure only at set time. --------------
-//         if ((today >= 23.30) && (today <= 0.30)) {
+//         if ((today >= 23.30) || (today <= 0.30)) {
 //             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
 //             log(LOG_LEVELS.INFO,`Offline 0 at actiVity`);
 //           } else if ((today >= 5.30) && (today <= 6.30)) {
