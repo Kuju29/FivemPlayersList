@@ -206,7 +206,7 @@ exports.start = function(SETUP) {
   
   async function playerall() {
 
-  const res = await fetch(URL_SERVER);
+  const res = await fetch_retry(URL_SERVER);
   const text = await res.text();
 
     let $ = cheerio.load(text);
@@ -221,7 +221,7 @@ exports.start = function(SETUP) {
 
   const checkOnlineStatus = async () => {
   try {
-    const online = await fetch(URL_SERVER);
+    const online = await fetch_retry(URL_SERVER);
     return online.status >= 200 && online.status < 300;
   } catch (err) {
     return false;
