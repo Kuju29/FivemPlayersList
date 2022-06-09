@@ -60,6 +60,10 @@ const TEMPLATE = {
     'message': 'FETCHTEST_LOOP',
     'required': true,
   },
+  'FETCH_TIMEOUT': {
+    'message': 'FETCH_TIMEOUT',
+    'required': true,
+  },
   'UPDATE_TIME': {
     'message': 'UPDATE',
     'required': true,
