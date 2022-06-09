@@ -51,6 +51,7 @@
     "BUG_LOG_CHANNEL": "657070256925442058",  #: (N/A)
     "LOG_CHANNEL": "617873550648279051",  #: (N/A)
     "FETCHTEST_LOOP": "4",  #: number of retries when server fails
+    "FETCH_TIMEOUT": "3000", #: Delay in API checks. if you don't have this will make it look like you are attacking the server.
     "UPDATE_TIME": "4000",  #: update time
     "RESTART_TIMES": "" #: (N/A)
   }
