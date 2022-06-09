@@ -70,7 +70,7 @@ exports.start = function(SETUP) {
   const UPDATE_TIME = SETUP.UPDATE_TIME; // in ms
   const MIN_TIMEOUT = SETUP.FETCH_TIMEOUT;
   const MAX_RETRIES = SETUP.FETCHTEST_LOOP;
-  const MAX_RETRY_AFTER = 3000;
+  const MAX_RETRY_AFTER = 1000;
   const FACTOR = 3;
 
   var TICK_N = 0;
