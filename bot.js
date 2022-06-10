@@ -194,7 +194,7 @@ exports.start = function(SETUP) {
 
   const res = await fetch_retry(URL_DYNAMIC);
   const data = await res.json();
-  console.log(data);
+
   if (res.ok) {
       return data;
     } else {
@@ -543,7 +543,7 @@ const actiVity = async () => {
         .setTitle(`Search player | ${SERVER_NAME}`)
         .setDescription(result.length > 0 ? result : 'No Players')
         .setTimestamp();
-        log(LOG_LEVELS.INFO, 'Completed !s message');
+        log(LOG_LEVELS.INFO, 'Completed !id message');
       await new Promise(resolve => setTimeout(resolve, 0));
       msg.channel.send(embed)
     } else {
