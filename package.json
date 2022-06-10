@@ -10,12 +10,12 @@
   "author": "Douile / Roque / Skylar",
   "license": "GPL-3.0",
   "dependencies": {
-    "@vercel/fetch": "^6.2.0",
     "async-retry": "^1.3.3",
     "debug": "^4.3.4",
     "discord.js": "^12.5.3",
     "fetch-retry": "^5.0.2",
     "fs": "^0.0.1-security",
+    "node-fetch": "^1.7.3",
     "readline": "^1.3.0"
   },
   "repository": {
