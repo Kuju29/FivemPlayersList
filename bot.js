@@ -4,9 +4,7 @@ const Discord = require('discord.js');
 const { paddedFullWidth, errorWrap } = require('./utils.js');
 
 // Retrieve data from API ----------------------------------
-const fetch = require('node-fetch');
-const retry = require('async-retry');
-const debug = require('debug')('fetch-retry');
+const fetch = require('@vercel/fetch-retry')(require('node-fetch'));
 // -----------------------------------------------------------
 
 const LOG_LEVELS = {
@@ -84,103 +82,10 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
-  function isClientError(err) {
-   if (!err) return false;
-   return (
-      err.code === 'ERR_UNESCAPED_CHARACTERS' ||
-      err.message === 'Request path contains unescaped characters'
-   );
-  }
-  
-  async function fetch_retry(url, opts = {}) {
-    const retryOpts = Object.assign(
-      {
-        // timeouts will be [10, 60, 360, 2160, 12960]
-        // (before randomization is added)
-        minTimeout: MIN_TIMEOUT,
-        retries: MAX_RETRIES,
-        factor: FACTOR,
-        maxRetryAfter: MAX_RETRY_AFTER,
-      },
-      opts.retry
-    );
-
-    if (opts.onRetry) {
-      retryOpts.onRetry = (error) => {
-        opts.onRetry(error, opts);
-        if (opts.retry && opts.retry.onRetry) {
-          opts.retry.onRetry(error);
-        }
-      };
-    }
-
-    try {
-      return await retry(async (bail, attempt) => {
-        const { method = 'GET' } = opts;
-        try {
-          // this will be retried
-          const res = await fetch(url, opts);
-          debug('status %d', res.status);
-          if ((res.status >= 500 && res.status < 600) || res.status === 429) {
-            // NOTE: doesn't support http-date format
-            const retryAfter = parseInt(res.headers.get('retry-after'), 10);
-            if (retryAfter) {
-              if (retryAfter > retryOpts.maxRetryAfter) {
-                return res;
-              } else {
-                await new Promise((r) => setTimeout(r, retryAfter * 1e3));
-              }
-            }
-            throw new ResponseError(res);
-          } else {
-            return res;
-          }
-        } catch (err) {
-          if (err.type === 'aborted') {
-            return bail(err);
-          }
-          const clientError = isClientError(err);
-          const isRetry = !clientError && attempt <= retryOpts.retries;
-          debug(
-            `${method} ${url} error (status = ${err.status}). ${
-              isRetry ? 'retrying' : ''
-            }`,
-            err
-          );
-          if (clientError) {
-            return bail(err);
-          }
-          throw err;
-        }
-      }, retryOpts);
-    } catch (err) {
-      if (err instanceof ResponseError) {
-        return err.res;
-      }
-      throw err;
-    }
-  }
-
-  class ResponseError extends Error {
-  constructor(res) {
-    super(res.statusText);
-
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, ResponseError);
-    }
-
-    this.name = this.constructor.name;
-    this.res = res;
-
-    // backward compat
-    this.code = this.status = this.statusCode = res.status;
-    this.url = res.url;
-   }
-  }
 
   async function getPlayers() {
     
-  const res = await fetch_retry(URL_PLAYERS);
+  const res = await fetch(URL_PLAYERS, {minTimeout: MIN_TIMEOUT, retries: MAX_RETRIES, factor: FACTOR, maxRetryAfter: MAX_RETRY_AFTER});
   const data = await res.json();
 
   if (res.ok) {
@@ -192,7 +97,7 @@ exports.start = function(SETUP) {
 
   async function getDynamic() {
 
-  const res = await fetch_retry(URL_DYNAMIC);
+  const res = await fetch(URL_DYNAMIC, {minTimeout: MIN_TIMEOUT, retries: MAX_RETRIES, factor: FACTOR, maxRetryAfter: MAX_RETRY_AFTER});
   const data = await res.json();
 
   if (res.ok) {
@@ -204,7 +109,7 @@ exports.start = function(SETUP) {
   
   async function playerall() {
 
-  const res = await fetch_retry(URL_SERVER);
+  const res = await fetch(URL_SERVER, {minTimeout: MIN_TIMEOUT, retries: MAX_RETRIES, factor: FACTOR, maxRetryAfter: MAX_RETRY_AFTER});
   const text = await res.text();
 
     let $ = cheerio.load(text);
@@ -220,7 +125,7 @@ exports.start = function(SETUP) {
   const checkOnlineStatus = async () => {
 
   try {
-    const online = await fetch_retry(URL_SERVER);
+    const online = await fetch(URL_SERVER, {minTimeout: MIN_TIMEOUT, retries: MAX_RETRIES, factor: FACTOR, maxRetryAfter: MAX_RETRY_AFTER});
     return online.status >= 200 && online.status < 300;
   } catch (err) {
     return false;
@@ -353,8 +258,35 @@ const actiVity = async () => {
         }
 
       } else {
+
             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
             log(LOG_LEVELS.INFO,`Offline server at actiVity`);
+
+// ----------- Fixed showing offline when server failure only at set time. --------------
+
+        // var date = new Date(new Date().toLocaleString("TH", {timeZone: "Asia/Bangkok"}));
+        // var date = new Date();
+        // var hours = date.getHours();
+        // var minutes = String(date.getMinutes()).padStart(2, "0");
+        // var today = hours + "." + minutes;
+        
+        //  if ((today >= 23.30) || (today <= 0.30)) {
+        //     bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+        //     log(LOG_LEVELS.INFO,`Offline 0 at actiVity`);
+        //   } else if ((today >= 5.30) && (today <= 6.30)) {
+        //     bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+        //     log(LOG_LEVELS.INFO,`Offline 6 at actiVity`);
+        //   } else if ((today >= 11.30) && (today <= 12.30)) {
+        //     bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+        //     log(LOG_LEVELS.INFO,`Offline 12 at actiVity`);
+        //   } else if ((today >= 17.30) && (today <= 18.30)) {
+        //      bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
+        //     log(LOG_LEVELS.INFO,`Offline 18 at actiVity`);
+        //   } else {
+        //     log(LOG_LEVELS.INFO,`not time at actiVity`);
+        //   }
+
+// ------------------------------------------------------------------------------------
         }
 
       }).catch ((err) =>{
