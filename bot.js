@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const { paddedFullWidth, errorWrap } = require('./utils.js');
 
 // Retrieve data from API ----------------------------------
-const fetch = require('@vercel/fetch')(require('node-fetch'));
+const fetch = require('node-fetch');
 const retry = require('async-retry');
 const debug = require('debug')('fetch-retry');
 // -----------------------------------------------------------
@@ -71,7 +71,7 @@ exports.start = function(SETUP) {
   const MIN_TIMEOUT = SETUP.FETCH_TIMEOUT;
   const MAX_RETRIES = SETUP.FETCHTEST_LOOP;
   const MAX_RETRY_AFTER = 1000;
-  const FACTOR = 3;
+  const FACTOR = 2;
 
   var TICK_N = 0;
   var MESSAGE;
@@ -178,8 +178,6 @@ exports.start = function(SETUP) {
    }
   }
 
-  exports.ResponseError = ResponseError;
-
   async function getPlayers() {
     
   const res = await fetch_retry(URL_PLAYERS);
@@ -196,7 +194,7 @@ exports.start = function(SETUP) {
 
   const res = await fetch_retry(URL_DYNAMIC);
   const data = await res.json();
-
+  console.log(data);
   if (res.ok) {
       return data;
     } else {
@@ -220,6 +218,7 @@ exports.start = function(SETUP) {
   }
 
   const checkOnlineStatus = async () => {
+
   try {
     const online = await fetch_retry(URL_SERVER);
     return online.status >= 200 && online.status < 300;
@@ -227,10 +226,7 @@ exports.start = function(SETUP) {
     return false;
     }
   }
-  module.exports.getPlayers = getPlayers;
-  module.exports.getDynamic = getDynamic;
-  module.exports.playerall = playerall;
-  module.exports.checkOnlineStatus = checkOnlineStatus;
+
 // ---------------------------------------------------------
 
   const log = function(level,message) {
@@ -312,16 +308,19 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
 
         let playersonline = (await getDynamic()).clients;
         let maxplayers = (await getDynamic()).sv_maxclients;
-        if (playersonline !== LAST_COUNT) log(LOG_LEVELS.INFO,`${playersonline} players`);
+        if (playersonline !== LAST_COUNT) log(LOG_LEVELS.INFO,`${playersonline} players at updateMessage`);
         let embed = UpdateEmbed()
         .addFields(
           { name: "Server Status ",           value: "```✅ Online```",                                                                               inline: true },
           { name: "Online Players",           value: `\`\`\`${playersonline}/${maxplayers}\`\`\`\u200b`,                                              inline: true })
         .setThumbnail(SERVER_LOGO)
 
+        await new Promise(resolve => setTimeout(resolve, UPDATE_TIME));
         sendOrUpdate(embed);
         LAST_COUNT = playersonline;
+        updateMessage();
       }).catch(offline);
+
     TICK_N++;
     if (TICK_N >= TICK_MAX) {
       TICK_N = 0;
@@ -336,7 +335,7 @@ const actiVity = async () => {
       checkOnlineStatus().then(async(server) => {
 
       if (server) {
-        
+
         let players = (await getPlayers());
         let playersonline = (await getDynamic()).clients;
         let maxplayers = (await getDynamic()).sv_maxclients;
@@ -354,33 +353,8 @@ const actiVity = async () => {
         }
 
       } else {
-
-//         var date = new Date(new Date().toLocaleString("TH", {timeZone: "Asia/Bangkok"}));
-        var date = new Date();
-        var hours = date.getHours();
-        var minutes = String(date.getMinutes()).padStart(2, "0");
-        var today = hours + "." + minutes;
-        
             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-            log(LOG_LEVELS.INFO,`Offline server failure at actiVity`);
-        
-// ----------- Fixed showing offline when server failure only at set time. --------------
-//         if ((today >= 23.30) || (today <= 0.30)) {
-//             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-//             log(LOG_LEVELS.INFO,`Offline 0 at actiVity`);
-//           } else if ((today >= 5.30) && (today <= 6.30)) {
-//             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-//             log(LOG_LEVELS.INFO,`Offline 6 at actiVity`);
-//           } else if ((today >= 11.30) && (today <= 12.30)) {
-//             bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-//             log(LOG_LEVELS.INFO,`Offline 12 at actiVity`);
-//           } else if ((today >= 17.30) && (today <= 18.30)) {
-//              bot.user.setActivity(`🔴 Offline`,{'type':'WATCHING'});
-//             log(LOG_LEVELS.INFO,`Offline 18 at actiVity`);
-//           } else {
-//             log(LOG_LEVELS.INFO,`not time at actiVity`);
-//           }
-// ---------------------------------------------------------------------------------------
+            log(LOG_LEVELS.INFO,`Offline server at actiVity`);
         }
 
       }).catch ((err) =>{
@@ -419,7 +393,7 @@ const actiVity = async () => {
       }, status: "online"
     })
     
-    bot.setInterval(updateMessage, UPDATE_TIME);
+    updateMessage();
     actiVity();
     
   });
@@ -569,7 +543,7 @@ const actiVity = async () => {
         .setTitle(`Search player | ${SERVER_NAME}`)
         .setDescription(result.length > 0 ? result : 'No Players')
         .setTimestamp();
-        log(LOG_LEVELS.INFO, 'Completed !id message');
+        log(LOG_LEVELS.INFO, 'Completed !s message');
       await new Promise(resolve => setTimeout(resolve, 0));
       msg.channel.send(embed)
     } else {
