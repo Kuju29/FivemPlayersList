@@ -17,9 +17,11 @@
 
 
 ## Note  
-<sub>In config.json "FETCHTEST_LOOP" Affects the speed of the server on and off notification. If your bot server or fivem server is stable Should be adjusted to low, recommend 2 or 3.</sub>
+- <sub>In config.json "FETCHTEST_LOOP" Affects the speed of the server on and off notification. If your bot server or fivem server is stable Should be adjusted to low, recommend 2 or 3.</sub>
   
-<sub>If you want to disable message, just add `//` before the message as in the example.</sub>
+- <sub>In config.json The value of "UPDATE_TIME" must be larger than the value of "FETCH_TIMEOUT" Because if the update time is too short, the API request will be forced to be updated.</sub> 
+  
+- <sub>If you want to disable message, just add `//` before the message as in the example.</sub>
 ```js
     bot.user.setPresence({
       activity: {
