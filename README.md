@@ -70,6 +70,7 @@
 ## Commands
 
 > `!s <Message>`  Find out which players are currently online. \
+> `!id <Server ID>` Find Out Players Info By there Player ID. \
 > `!all`  All players on yourserver. \
 > `!clear`  Clear msg from bots limit 20.  \
 > `+status <Message>`  Adds a warning message to the server status embed  \
