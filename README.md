@@ -41,7 +41,7 @@
     "MAX_PLAYERS": "850", #: max players (N/A)
     "SERVER_LOGO": "https://www.catdumb.com/wp-content/uploads/2022/04/2-75.jpg", #: server Logo
     "EMBED_COLOR": "#b434eb", #: text box color (N/A)
-    "LOG_LEVEL": "2", #: logs displayed (N/A)
+    "LOG_LEVEL": "2", #: 'ERROR': 3, 'INFO': 2, 'DEBUG': 1, 'SPAM': 0 (N/A)
     "PERMISSION": "MANAGE_MESSAGES", #: (N/A)
     "BOT_TOKEN": "[BOT TOKEN]", #: https://discord.com/developers/applications
     "CHANNEL_ID": "617873518960574464", #: Change it when you want a notification in discord room
