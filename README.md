@@ -17,9 +17,7 @@
 
 
 ## Note  
-- <sub>In config.json "FETCHTEST_LOOP" Affects the speed of the server on and off notification. If your bot server or fivem server is stable Should be adjusted to low, recommend 2 or 3.</sub>
-  
-- <sub>In config.json The value of "UPDATE_TIME" must be larger than the value of "FETCH_TIMEOUT" Because if the update time is too short, the API request will be forced to be updated.</sub> 
+- <sub>Don't update time it below 3,000, it will make it look like you are attacking the server.</sub>
   
 - <sub>If you want to disable message, just add `//` before the message as in the example.</sub>
 ```js
@@ -52,8 +50,8 @@
     "BUG_CHANNEL": "617873444238786617",  #: (N/A)
     "BUG_LOG_CHANNEL": "657070256925442058",  #: (N/A)
     "LOG_CHANNEL": "617873550648279051",  #: (N/A)
-    "FETCHTEST_LOOP": "4",  #: number of retries when server fails
-    "FETCH_TIMEOUT": "3000", #: Delay in API checks. if you don't have this will make it look like you are attacking the server.
+    "FETCHTEST_LOOP": "4",  #: I disabled this function. Just keep it for the future (N/A)
+    "FETCH_TIMEOUT": "3000", #: I disabled this function. Just keep it for the future (N/A)
     "UPDATE_TIME": "4000",  #: update time
     "RESTART_TIMES": "" #: (N/A)
   }
