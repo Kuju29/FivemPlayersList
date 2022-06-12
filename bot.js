@@ -221,7 +221,7 @@ var checkMe = ['ADMINISTRATOR','CREATE_INSTANT_INVITE','KICK_MEMBERS','BAN_MEMBE
           { name: "Online Players",           value: `\`\`\`${playersonline}/${maxplayers}\`\`\`\u200b`,                                              inline: true })
         .setThumbnail(SERVER_LOGO)
 
-        await new Promise(resolve => setTimeout(resolve, UPDATE_TIME));
+        await new Promise(resolve => setTimeout(resolve, UPDATE_TIME*2));
         sendOrUpdate(embed);
         LAST_COUNT = playersonline;
         updateMessage();
