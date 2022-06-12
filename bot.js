@@ -4,7 +4,8 @@ const Discord = require('discord.js');
 const { paddedFullWidth, errorWrap } = require('./utils.js');
 
 // Retrieve data from API ----------------------------------
-const fetch = require('@vercel/fetch-retry')(require('node-fetch'));
+const fetch = require('@vercel/fetch')(require('node-fetch'));
+const cheerio = require('cheerio');
 // -----------------------------------------------------------
 
 const LOG_LEVELS = {
@@ -66,10 +67,10 @@ exports.start = function(SETUP) {
   const BUG_LOG_CHANNEL = SETUP.BUG_LOG_CHANNEL;
   const LOG_CHANNEL = SETUP.LOG_CHANNEL;
   const UPDATE_TIME = SETUP.UPDATE_TIME; // in ms
-  const MIN_TIMEOUT = SETUP.FETCH_TIMEOUT;
-  const MAX_RETRIES = SETUP.FETCHTEST_LOOP;
-  const MAX_RETRY_AFTER = 1000;
-  const FACTOR = 2;
+//   const MIN_TIMEOUT = SETUP.FETCH_TIMEOUT;
+//   const MAX_RETRIES = SETUP.FETCHTEST_LOOP;
+//   const MAX_RETRY_AFTER = 1000;
+//   const FACTOR = 2;
 
   var TICK_N = 0;
   var MESSAGE;
@@ -85,7 +86,7 @@ exports.start = function(SETUP) {
 
   async function getPlayers() {
     
-  const res = await fetch(URL_PLAYERS, {minTimeout: MIN_TIMEOUT, retries: MAX_RETRIES, factor: FACTOR, maxRetryAfter: MAX_RETRY_AFTER});
+  const res = await fetch(URL_PLAYERS);
   const data = await res.json();
 
   if (res.ok) {
@@ -97,7 +98,7 @@ exports.start = function(SETUP) {
 
   async function getDynamic() {
 
-  const res = await fetch(URL_DYNAMIC, {minTimeout: MIN_TIMEOUT, retries: MAX_RETRIES, factor: FACTOR, maxRetryAfter: MAX_RETRY_AFTER});
+  const res = await fetch(URL_DYNAMIC);
   const data = await res.json();
 
   if (res.ok) {
@@ -109,7 +110,7 @@ exports.start = function(SETUP) {
   
   async function playerall() {
 
-  const res = await fetch(URL_SERVER, {minTimeout: MIN_TIMEOUT, retries: MAX_RETRIES, factor: FACTOR, maxRetryAfter: MAX_RETRY_AFTER});
+  const res = await fetch(URL_SERVER);
   const text = await res.text();
 
     let $ = cheerio.load(text);
@@ -125,7 +126,7 @@ exports.start = function(SETUP) {
   const checkOnlineStatus = async () => {
 
   try {
-    const online = await fetch(URL_SERVER, {minTimeout: MIN_TIMEOUT, retries: MAX_RETRIES, factor: FACTOR, maxRetryAfter: MAX_RETRY_AFTER});
+    const online = await fetch(URL_SERVER);
     return online.status >= 200 && online.status < 300;
   } catch (err) {
     return false;
