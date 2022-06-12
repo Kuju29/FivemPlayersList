@@ -126,7 +126,7 @@ exports.start = function(SETUP) {
   const checkOnlineStatus = async () => {
 
   try {
-    const online = await fetch(URL_SERVER);
+    const online = await fetch(URL_DYNAMIC);
     return online.status >= 200 && online.status < 300;
   } catch (err) {
     return false;
