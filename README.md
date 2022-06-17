@@ -64,6 +64,33 @@
 > 3.`npm i` or `npm install`\
 > 4.`npm start` or `node ./index.js`
 
+## If you want to use [pnpm](https://pnpm.io/installation) to update fast
+> 1.Delete "node_modules" and "package-lock.json" in your folder\
+> 2.Open command line : [Example](https://user-images.githubusercontent.com/22098092/165669382-26958438-b58a-4bb7-90a9-bd7ce55f7210.png)\
+> 3.`npm install -g pnpm`\
+> 4.`pnpm config set auto-install-peers true`\
+> 5.`pnpm install`\
+> 6.`pnpm start`
+
+<sub>Or edit file "start.bat" after following steps 1-4</sub>
+```bat
+@echo off
+title Edit By Kuju - DiscordBot
+
+echo Press any key to start the server
+pause > nul
+CLS
+
+echo Starting
+if not exist pnpm-lock.yaml (
+pnpm install
+pnpm start
+node ./index.js
+) else (
+pnpm start
+node ./index.js
+)
+```
   
 ## Commands
 
