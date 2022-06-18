@@ -241,7 +241,7 @@ const actiVity = async () => {
         let playersonline = (await getDynamic()).clients;
         let maxplayers = (await getDynamic()).sv_maxclients;
         let police = players.filter(function(person) {
-        return person.name.toLowerCase().includes("police");
+        return person.name.toLowerCase().includes("police"); // << Enter the police name for the count. (lowercase)
         });
                 
         if (playersonline === 0) {
