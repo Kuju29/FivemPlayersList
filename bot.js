@@ -5,7 +5,6 @@ const { paddedFullWidth, errorWrap } = require('./utils.js');
 
 // Retrieve data from API ----------------------------------
 const fetch = require('@vercel/fetch')(require('node-fetch'));
-const cheerio = require('cheerio');
 // -----------------------------------------------------------
 
 const LOG_LEVELS = {
@@ -67,10 +66,6 @@ exports.start = function(SETUP) {
   const BUG_LOG_CHANNEL = SETUP.BUG_LOG_CHANNEL;
   const LOG_CHANNEL = SETUP.LOG_CHANNEL;
   const UPDATE_TIME = SETUP.UPDATE_TIME; // in ms
-//   const MIN_TIMEOUT = SETUP.FETCH_TIMEOUT;
-//   const MAX_RETRIES = SETUP.FETCHTEST_LOOP;
-//   const MAX_RETRY_AFTER = 1000;
-//   const FACTOR = 2;
 
   var TICK_N = 0;
   var MESSAGE;
@@ -83,6 +78,16 @@ exports.start = function(SETUP) {
   var loop_callbacks = []; // for testing whether loop is still running
 
 // fetch API ---------------------------------------------------
+  
+  async function checkOnlineStatus() {
+
+  try {
+    const online = await fetch(URL_DYNAMIC);
+    return online.status >= 200 && online.status < 300;
+  } catch (err) {
+    return false;
+    }
+  }
 
   async function getPlayers() {
     
@@ -108,30 +113,20 @@ exports.start = function(SETUP) {
     }
   }
   
-  async function playerall() {
+//   async function playerall() {
 
-  const res = await fetch(URL_SERVER);
-  const text = await res.text();
+//   const res = await fetch(URL_SERVER);
+//   const text = await res.text();
 
-    let $ = cheerio.load(text);
-    let data = $('span.players').text().match(/[0-9]+/);
+//     let $ = cheerio.load(text);
+//     let data = $('span.players').text().match(/[0-9]+/);
     
-    if (data >= 0) {
-      return data;
-    } else {
-      return null;
-    }
-  }
-
-  const checkOnlineStatus = async () => {
-
-  try {
-    const online = await fetch(URL_DYNAMIC);
-    return online.status >= 200 && online.status < 300;
-  } catch (err) {
-    return false;
-    }
-  }
+//     if (data >= 0) {
+//       return data;
+//     } else {
+//       return null;
+//     }
+//   }
 
 // ---------------------------------------------------------
 
@@ -249,8 +244,7 @@ const actiVity = async () => {
         return person.name.toLowerCase().includes("police");
         });
                 
-        if (playersonline === 0) 
-        {
+        if (playersonline === 0) {
           bot.user.setActivity(`⚠ Wait for Connect`,{'type':'WATCHING'});
           log(LOG_LEVELS.INFO,`Wait for Connect update at actiVity`);
         } else if (playersonline >= 1) {
